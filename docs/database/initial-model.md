@@ -1,6 +1,6 @@
 # Etapa 4 — Modelagem inicial do banco
 
-Modelo proposto para MySQL 8.4/InnoDB, derivado do [escopo](../requirements/mvp-scope.md) e dos [casos de uso](../requirements/use-cases.md). Ainda não existe schema executado ou migration validada. A próxima etapa examinará formalmente dependências funcionais e normalização antes de produzir DDL.
+Modelo proposto para MySQL 8.4/InnoDB, derivado do [escopo](../requirements/mvp-scope.md) e dos [casos de uso](../requirements/use-cases.md). Ainda não existe schema executado ou migration validada. A [análise de normalização](normalization.md) examina formalmente dependências funcionais antes de produzir DDL.
 
 ## Entidades e identificação
 
@@ -184,4 +184,4 @@ Em Banco de Dados: entidades, atributos, chaves, participação, cardinalidades,
 
 Perguntas de professores: por que não armazenar autores em uma coluna? Porque são uma relação N:M consultável com integridade. Por que não guardar apenas quantidade? Porque empréstimos pertencem a unidades físicas. Como garantir apenas um empréstimo ativo? Índice condicional em coluna gerada mais coordenação transacional, verificados no MySQL. Histórico significa auditoria completa? Não: preservamos empréstimos e vínculos; versões dos metadados ficam fora do MVP.
 
-Próxima etapa: explicitar dependências funcionais e justificar 1FN, 2FN e 3FN para cada relação, revisando o modelo antes do DDL.
+Continuação: [dependências funcionais e normalização](normalization.md), com revisão do modelo antes do DDL.
