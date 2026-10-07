@@ -4,7 +4,7 @@ Projeto acadêmico para as disciplinas de Projeto de Banco de Dados e Análise e
 
 ## Estado atual
 
-Etapas 1–3: análise da proposta, escopo do MVP e casos de uso. **Ainda não há aplicação, banco criado, dependências instaladas ou testes automatizados.** As tecnologias abaixo são propostas, não implementadas.
+Etapas 1–4: análise da proposta, escopo, casos de uso e modelagem inicial do banco. **Ainda não há aplicação, banco criado, dependências instaladas ou testes automatizados.** As tecnologias abaixo são propostas, não implementadas.
 
 Leia a [análise inicial](docs/requirements/initial-analysis.md), que registra escopo, requisitos, regras, arquitetura, tecnologias e plano de evolução.
 
@@ -12,13 +12,15 @@ O [escopo do MVP](docs/requirements/mvp-scope.md) define os limites do produto e
 
 Os [casos de uso](docs/requirements/use-cases.md) detalham fluxos e alternativas. O [diagrama PlantUML](docs/uml/use-cases.puml) representa o ator e os objetivos do MVP proposto; sua renderização ainda não foi validada.
 
+O [modelo inicial do banco](docs/database/initial-model.md) registra o dicionário de dados, relacionamentos, restrições e decisões de concorrência propostas para MySQL.
+
 ## Stack proposta
 
 Java 21, Spring Boot, Maven, MySQL e Flyway no backend; React, TypeScript e Vite no frontend. A adoção de bibliotecas adicionais será justificada conforme surgirem necessidades.
 
 ## Desenvolvimento
 
-A análise inicial foi aprovada para continuidade. A próxima etapa define o modelo inicial do banco; a implementação seguirá a modelagem e as decisões de arquitetura. Os comandos de execução, configuração e testes serão documentados quando existirem e forem verificados. Não há demonstração publicada nem licença definida nesta etapa.
+A análise inicial foi aprovada para continuidade. A próxima etapa analisa dependências funcionais e normalização; a implementação seguirá a modelagem e as decisões de arquitetura. Os comandos de execução, configuração e testes serão documentados quando existirem e forem verificados. Não há demonstração publicada nem licença definida nesta etapa.
 
 ## Git
 
