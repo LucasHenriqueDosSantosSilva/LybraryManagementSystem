@@ -4,9 +4,11 @@ Projeto acadêmico para as disciplinas de Projeto de Banco de Dados e Análise e
 
 ## Estado atual
 
-Etapa 1: análise da proposta. **Ainda não há aplicação, banco criado, dependências instaladas ou testes automatizados.** As tecnologias abaixo são propostas, não implementadas.
+Etapas 1 e 2: análise da proposta e definição do escopo do MVP. **Ainda não há aplicação, banco criado, dependências instaladas ou testes automatizados.** As tecnologias abaixo são propostas, não implementadas.
 
 Leia a [análise inicial](docs/requirements/initial-analysis.md), que registra escopo, requisitos, regras, arquitetura, tecnologias e plano de evolução.
+
+O [escopo do MVP](docs/requirements/mvp-scope.md) define os limites do produto e os critérios de aceite para as próximas etapas.
 
 ## Stack proposta
 
@@ -14,7 +16,7 @@ Java 21, Spring Boot, Maven, MySQL e Flyway no backend; React, TypeScript e Vite
 
 ## Desenvolvimento
 
-A implementação começa após a revisão da análise inicial. Os comandos de execução, configuração e testes serão documentados quando existirem e forem verificados. Não há demonstração publicada nem licença definida nesta etapa.
+A análise inicial foi aprovada para continuidade. A próxima etapa detalha os casos de uso; a implementação seguirá a modelagem e as decisões de arquitetura. Os comandos de execução, configuração e testes serão documentados quando existirem e forem verificados. Não há demonstração publicada nem licença definida nesta etapa.
 
 ## Git
 
