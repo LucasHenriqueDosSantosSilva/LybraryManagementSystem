@@ -1,0 +1,26 @@
+@startuml
+left to right direction
+actor "Bibliotecário" as Librarian
+rectangle "Library Management System — MVP proposto" {
+  usecase "UC01 Manter leitores" as UC01
+  usecase "UC02 Manter autores
+e categorias" as UC02
+  usecase "UC03 Manter livros" as UC03
+  usecase "UC04 Manter exemplares" as UC04
+  usecase "UC05 Realizar empréstimo" as UC05
+  usecase "UC06 Registrar devolução" as UC06
+  usecase "UC07 Consultar catálogo" as UC07
+  usecase "UC08 Consultar empréstimos
+e histórico" as UC08
+  usecase "UC09 Acompanhar dashboard" as UC09
+}
+Librarian --> UC01
+Librarian --> UC02
+Librarian --> UC03
+Librarian --> UC04
+Librarian --> UC05
+Librarian --> UC06
+Librarian --> UC07
+Librarian --> UC08
+Librarian --> UC09
+@enduml
