@@ -4,7 +4,7 @@ Projeto acadêmico para as disciplinas de Projeto de Banco de Dados e Análise e
 
 ## Estado atual
 
-Etapas 1–7: análise, escopo, casos de uso, modelagem, normalização, arquitetura e estrutura do repositório. **Etapa 8 iniciada:** backend executável com CRUD de categorias, autores, livros, leitores e exemplares, empréstimos e devoluções, busca do catálogo e dashboard, migrations MySQL e 43 testes passando. Frontend e autenticação pública ainda não estão implementados.
+Etapas 1–7: análise, escopo, casos de uso, modelagem, normalização, arquitetura e estrutura do repositório. **Etapa 8 — baseline do backend concluída; etapa 9 — análise registrada:** backend executável com CRUD de categorias, autores, livros, leitores e exemplares, empréstimos e devoluções, busca do catálogo e dashboard, migrations MySQL e 43 testes passando. Frontend e autenticação pública ainda não estão implementados.
 
 Leia a [análise inicial](docs/requirements/initial-analysis.md), que registra escopo, requisitos, regras, arquitetura, tecnologias e plano de evolução.
 
@@ -28,7 +28,7 @@ Implementados: Java 21, Spring Boot, Maven Wrapper, MySQL, Flyway, JPA, Bean Val
 
 ## Desenvolvimento
 
-A análise inicial foi aprovada para continuidade. A baseline do backend está em desenvolvimento incremental. A baseline funcional do backend está preparada para análise dos problemas de projeto e refatoração, seguindo as etapas acadêmicas. Não há demonstração publicada nem licença definida nesta etapa.
+A análise inicial foi aprovada para continuidade. A baseline do backend está em desenvolvimento incremental. A [análise dos problemas da baseline](docs/before-refactoring/analysis.md) registra evidências e propostas. A próxima etapa aplica refatorações progressivas, preservando contratos e integridade. Não há demonstração publicada nem licença definida nesta etapa.
 
 ## Git
 
