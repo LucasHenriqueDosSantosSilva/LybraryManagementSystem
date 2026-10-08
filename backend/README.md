@@ -4,7 +4,7 @@ Java 21, Spring Boot 3.5.7, Maven Wrapper 3.9.11, Spring Web/Data JPA, Bean Vali
 
 ## Implementado
 
-CRUD de categorias, autores e livros, lista paginada (20 por padrão, máximo 100), validação de nome, unicidade conforme collation MySQL e respostas de erro ProblemDetail. Flyway cria `categories`, `authors`, `books` e `book_authors`; Hibernate valida o schema. Leitores, exemplares e circulação ainda não existem.
+CRUD de categorias, autores, livros, leitores e exemplares, lista paginada (20 por padrão, máximo 100), validação de nome, unicidade conforme collation MySQL e respostas de erro ProblemDetail. Flyway cria `categories`, `authors`, `books`, `book_authors`, `readers` e `book_copies`; Hibernate valida o schema. Circulação ainda não existe.
 
 | Método | Rota | Resultado |
 | --- | --- | --- |
@@ -37,7 +37,7 @@ Para testes de integração, configure **DB_URL para um schema MySQL de testes s
 ./mvnw package
 ```
 
-A suíte contém 4 testes unitários (1 com Mockito e 3 de ISBN) e 15 testes Spring Boot/MockMvc contra MySQL. Usa transações com rollback para dados de teste, mas Flyway cria schema e histórico de migrations; nunca apontar os testes para um banco de produção. Testes de categoria usam rollback; testes de catálogo confirmam operações e limpam apenas seus registros. Use um schema de testes dedicado sem dados preexistentes. Os testes ainda não demonstram TDD: foram escritos neste incremento, sem histórico RED/GREEN registrado.
+A suíte contém 4 testes unitários (1 com Mockito e 3 de ISBN) e 23 testes Spring Boot/MockMvc contra MySQL. Usa transações com rollback para dados de teste, mas Flyway cria schema e histórico de migrations; nunca apontar os testes para um banco de produção. Testes de categoria usam rollback; testes de catálogo confirmam operações e limpam apenas seus registros. Use um schema de testes dedicado sem dados preexistentes. Os testes ainda não demonstram TDD: foram escritos neste incremento, sem histórico RED/GREEN registrado.
 
 ## Ambiente de nuvem atual
 
@@ -74,4 +74,26 @@ As mesmas operações CRUD estão disponíveis em `/api/authors` e `/api/books`,
 
 ISBN válido é normalizado para ISBN-13 e tem unicidade no banco. ISBN-10 equivalente não permite novo cadastro. Ano entre 1 e 9999, título obrigatório e autores não vazios; autor ou categoria inexistente retorna 404, sem salvar parcialmente. PUT substitui os detalhes e a lista de autores. Resposta inclui autores ordenados por id; não serializa entidades JPA.
 
-Ainda não há filtros de busca do catálogo, exemplares ou histórico. A proibição de mudar ISBN com histórico e excluir livros com exemplares será implementada quando essas entidades existirem. Paginação hoje pode executar consultas adicionais para carregar autores; otimização e análise de N+1 ficam para diagnóstico posterior com evidência.
+Ainda não há filtros de busca do catálogo ou histórico. A V3 impede excluir livros com exemplares. A proibição de mudar ISBN com histórico será implementada com os empréstimos. Paginação hoje pode executar consultas adicionais para carregar autores; otimização e análise de N+1 ficam para diagnóstico posterior com evidência.
+
+## Leitores e exemplares
+
+CRUD paginado em `/api/readers` e `/api/copies`, com consulta por id. POST/PUT de leitor recebem:
+
+```json
+{"registrationNumber":"STUDENT-01","name":"Leitor demonstrativo","email":null}
+```
+
+Matrícula é única, aparada e convertida para maiúsculas; aceita letras ASCII, números, ponto, hífen e sublinhado. Nome obrigatório; e-mail opcional com formato válido, sem unicidade. Cadastro inicia ativo. `PATCH /api/readers/{id}/status` recebe `{"active":false}` ou `{"active":true}`. PUT de dados não muda status. Neste incremento não existem empréstimos/histórico, então leitores podem ser excluídos; proteção do histórico será acrescentada na próxima migration.
+
+POST/PUT de exemplar recebem:
+
+```json
+{"inventoryCode":"COPY-01","bookId":1}
+```
+
+Código patrimonial único segue a normalização da matrícula, com limite de 40 caracteres. Cadastro exige livro existente. PUT pode editar código, mas deve manter bookId; tentar trocar livro retorna 409. `POST /api/copies/{id}/withdrawal` retira de circulação. Repetir retirada mantém WITHDRAWN; não há endpoint de reativação. Exemplar sem histórico pode ser excluído sem apagar o livro.
+
+Resposta de exemplar tem id, inventoryCode, bookId, circulationStatus e available. Por enquanto available deriva somente da circulação, pois empréstimos ainda não existem. O próximo incremento acrescentará ausência de empréstimo ativo à mesma regra e bloqueará retirada/exclusão incompatíveis com circulação histórica. Não interpretar este estado intermediário como gestão de empréstimos concluída.
+
+V3 estabelece as constraints de matrícula/código, status e FK exemplar → livro. Tentativa de excluir livro com exemplares retorna 409 e reverte também a remoção dos vínculos com autores.
