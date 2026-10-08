@@ -4,7 +4,7 @@ Java 21, Spring Boot 3.5.7, Maven Wrapper 3.9.11, Spring Web/Data JPA, Bean Vali
 
 ## Implementado
 
-CRUD de categorias, lista paginada (20 por padrão, máximo 100), validação de nome, unicidade conforme collation MySQL e respostas de erro ProblemDetail. Flyway cria apenas `categories`; Hibernate valida o schema. As demais entidades e circulação ainda não existem.
+CRUD de categorias, autores e livros, lista paginada (20 por padrão, máximo 100), validação de nome, unicidade conforme collation MySQL e respostas de erro ProblemDetail. Flyway cria `categories`, `authors`, `books` e `book_authors`; Hibernate valida o schema. Leitores, exemplares e circulação ainda não existem.
 
 | Método | Rota | Resultado |
 | --- | --- | --- |
@@ -14,7 +14,7 @@ CRUD de categorias, lista paginada (20 por padrão, máximo 100), validação de
 | PUT | /api/categories/{id} | 200, 400, 404 ou 409 |
 | DELETE | /api/categories/{id} | 204 ou 404 |
 
-POST/PUT recebem `{"name":"História"}`. Nomes são aparados; espaços não formam um nome válido; máximo de 100 caracteres. `Ficção` e `ficcao` conflitam pela collation `utf8mb4_0900_ai_ci`. Nesta primeira migration não existem livros nem FKs de categorias; a proteção contra exclusão de categoria vinculada será acrescentada com o catálogo.
+POST/PUT recebem `{"name":"História"}`. Nomes são aparados; espaços não formam um nome válido; máximo de 100 caracteres. `Ficção` e `ficcao` conflitam pela collation `utf8mb4_0900_ai_ci`. A V2 acrescenta FKs que impedem excluir categorias e autores associados a livros (409). Excluir livro remove seus vínculos de autoria, preservando os autores.
 
 ## Executar em outra máquina
 
@@ -37,7 +37,7 @@ Para testes de integração, configure **DB_URL para um schema MySQL de testes s
 ./mvnw package
 ```
 
-A suíte contém 1 teste unitário com Mockito e 6 testes Spring Boot/MockMvc contra MySQL. Usa transações com rollback para dados de teste, mas Flyway cria schema e histórico de migrations; nunca apontar os testes para um banco de produção. Os testes ainda não demonstram TDD: foram escritos neste incremento, sem histórico RED/GREEN registrado.
+A suíte contém 4 testes unitários (1 com Mockito e 3 de ISBN) e 15 testes Spring Boot/MockMvc contra MySQL. Usa transações com rollback para dados de teste, mas Flyway cria schema e histórico de migrations; nunca apontar os testes para um banco de produção. Testes de categoria usam rollback; testes de catálogo confirmam operações e limpam apenas seus registros. Use um schema de testes dedicado sem dados preexistentes. Os testes ainda não demonstram TDD: foram escritos neste incremento, sem histórico RED/GREEN registrado.
 
 ## Ambiente de nuvem atual
 
@@ -56,3 +56,22 @@ O helper é específico desta máquina e não substitui os pré-requisitos de ou
 ## Organização didática
 
 Pacotes globais `controller`, `service`, `repository`, `entity` e `dto` deixam a funcionalidade dispersa. `CategoryService` repete busca e mapeamento nas operações e depende de HTTP por `ResponseStatusException`. São candidatos plausíveis para análise posterior, não justificativa para refatorar antes de completar a baseline. Integridade, validação e testes são preservados desde o início.
+
+## Autores e livros
+
+As mesmas operações CRUD estão disponíveis em `/api/authors` e `/api/books`, com GET por id e lista paginada. Autor recebe `{"name":"Machado de Assis"}` e permite homônimos. Livro recebe, usando ids existentes:
+
+```json
+{
+  "isbn": "0-306-40615-2",
+  "title": "Livro demonstrativo",
+  "description": null,
+  "publicationYear": 2000,
+  "categoryId": 1,
+  "authorIds": [1, 2]
+}
+```
+
+ISBN válido é normalizado para ISBN-13 e tem unicidade no banco. ISBN-10 equivalente não permite novo cadastro. Ano entre 1 e 9999, título obrigatório e autores não vazios; autor ou categoria inexistente retorna 404, sem salvar parcialmente. PUT substitui os detalhes e a lista de autores. Resposta inclui autores ordenados por id; não serializa entidades JPA.
+
+Ainda não há filtros de busca do catálogo, exemplares ou histórico. A proibição de mudar ISBN com histórico e excluir livros com exemplares será implementada quando essas entidades existirem. Paginação hoje pode executar consultas adicionais para carregar autores; otimização e análise de N+1 ficam para diagnóstico posterior com evidência.

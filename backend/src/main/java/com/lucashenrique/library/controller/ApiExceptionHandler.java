@@ -23,6 +23,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         if (cause instanceof SQLException sql && sql.getErrorCode() == 1062 && sql.getMessage().contains("uk_categories_name")) {
             return ResponseEntity.status(409).body(ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, "Já existe uma categoria com esse nome."));
         }
+        if (cause instanceof SQLException sql && sql.getErrorCode() == 1062 && sql.getMessage().contains("uk_books_isbn")) {
+            return ResponseEntity.status(409).body(ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, "Já existe um livro com esse ISBN."));
+        }
+        if (cause instanceof SQLException sql && (sql.getErrorCode() == 1451 || sql.getErrorCode() == 1452)
+                && (sql.getMessage().contains("fk_books_category") || sql.getMessage().contains("fk_book_authors_"))) {
+            return ResponseEntity.status(409).body(ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, "A operação conflita com vínculos do catálogo."));
+        }
         LOG.error("Falha de integridade não classificada", ex);
         return ResponseEntity.internalServerError().body(ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Não foi possível concluir a operação."));
     }
