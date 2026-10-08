@@ -4,7 +4,7 @@ Projeto acadêmico para as disciplinas de Projeto de Banco de Dados e Análise e
 
 ## Estado atual
 
-Etapas 1–6: análise, escopo, casos de uso, modelagem, normalização e arquitetura. **Ainda não há aplicação, banco criado, dependências instaladas ou testes automatizados.** As tecnologias abaixo são propostas, não implementadas.
+Etapas 1–7: análise, escopo, casos de uso, modelagem, normalização, arquitetura e estrutura do repositório. **Ainda não há aplicação, banco criado, dependências instaladas ou testes automatizados.** As tecnologias abaixo são propostas, não implementadas.
 
 Leia a [análise inicial](docs/requirements/initial-analysis.md), que registra escopo, requisitos, regras, arquitetura, tecnologias e plano de evolução.
 
@@ -18,13 +18,15 @@ A [análise de normalização](docs/database/normalization.md) apresenta chaves 
 
 A [arquitetura proposta](docs/architecture/architecture.md) registra responsabilidades, módulos, contratos, transações e o plano da baseline didática.
 
+A [estrutura de desenvolvimento](docs/development/repository-structure.md) distingue arquivos atuais e futuros. As [convenções de contribuição](CONTRIBUTING.md) registram o fluxo Git, segurança e critérios de conclusão.
+
 ## Stack proposta
 
 Java 21, Spring Boot, Maven, MySQL e Flyway no backend; React, TypeScript e Vite no frontend. A adoção de bibliotecas adicionais será justificada conforme surgirem necessidades.
 
 ## Desenvolvimento
 
-A análise inicial foi aprovada para continuidade. A próxima etapa organiza a estrutura de desenvolvimento; a implementação seguirá a modelagem e as decisões de arquitetura. Os comandos de execução, configuração e testes serão documentados quando existirem e forem verificados. Não há demonstração publicada nem licença definida nesta etapa.
+A análise inicial foi aprovada para continuidade. A próxima etapa começa a baseline do backend de forma incremental, seguindo a modelagem e as decisões de arquitetura. Os comandos de execução, configuração e testes serão documentados quando existirem e forem verificados. Não há demonstração publicada nem licença definida nesta etapa.
 
 ## Git
 
