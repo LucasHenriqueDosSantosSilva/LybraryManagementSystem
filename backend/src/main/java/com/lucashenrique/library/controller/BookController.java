@@ -18,9 +18,9 @@ public class BookController {
         return ResponseEntity.created(URI.create("/api/books/" + response.id())).body(response);
     }
     @GetMapping
-    public Page<BookResponse> list(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
+    public Page<BookResponse> list(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size, @RequestParam(required=false) String title, @RequestParam(required=false) String isbn, @RequestParam(required=false) Long categoryId, @RequestParam(required=false) String author) {
         if (page < 0 || size < 1 || size > 100) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Paginação inválida.");
-        return service.list(page, size);
+        return service.list(page, size, title, isbn, categoryId, author);
     }
     @GetMapping("/{id}") public BookResponse get(@PathVariable Long id) { return service.get(id); }
     @PutMapping("/{id}") public BookResponse update(@PathVariable Long id, @Valid @RequestBody BookRequest request) { return service.update(id, request); }

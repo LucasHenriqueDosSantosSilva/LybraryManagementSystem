@@ -37,7 +37,7 @@ Para testes de integração, configure **DB_URL para um schema MySQL de testes s
 ./mvnw package
 ```
 
-A suíte contém 4 testes unitários (1 com Mockito e 3 de ISBN) e 35 testes Spring Boot/MockMvc contra MySQL. Usa transações com rollback para dados de teste, mas Flyway cria schema e histórico de migrations; nunca apontar os testes para um banco de produção. Testes de categoria usam rollback; testes de catálogo confirmam operações e limpam apenas seus registros. Use um schema de testes dedicado sem dados preexistentes. Os testes ainda não demonstram TDD: foram escritos neste incremento, sem histórico RED/GREEN registrado.
+A suíte contém 4 testes unitários (1 com Mockito e 3 de ISBN) e 39 testes Spring Boot/MockMvc contra MySQL. Usa transações com rollback para dados de teste, mas Flyway cria schema e histórico de migrations; nunca apontar os testes para um banco de produção. Testes de categoria usam rollback; testes de catálogo confirmam operações e limpam apenas seus registros. Use um schema de testes dedicado sem dados preexistentes. Os testes ainda não demonstram TDD: foram escritos neste incremento, sem histórico RED/GREEN registrado.
 
 ## Ambiente de nuvem atual
 
@@ -74,7 +74,7 @@ As mesmas operações CRUD estão disponíveis em `/api/authors` e `/api/books`,
 
 ISBN válido é normalizado para ISBN-13 e tem unicidade no banco. ISBN-10 equivalente não permite novo cadastro. Ano entre 1 e 9999, título obrigatório e autores não vazios; autor ou categoria inexistente retorna 404, sem salvar parcialmente. PUT substitui os detalhes e a lista de autores. Resposta inclui autores ordenados por id; não serializa entidades JPA.
 
-Ainda não há filtros de busca do catálogo ou histórico. A V3 impede excluir livros com exemplares. A V4 e os services impedem mudar ISBN de livro com histórico. Paginação hoje pode executar consultas adicionais para carregar autores; otimização e análise de N+1 ficam para diagnóstico posterior com evidência.
+Busca do catálogo e histórico de empréstimos estão disponíveis. A V3 impede excluir livros com exemplares. A V4 e os services impedem mudar ISBN de livro com histórico. Paginação hoje pode executar consultas adicionais para carregar autores; otimização e análise de N+1 ficam para diagnóstico posterior com evidência.
 
 ## Leitores e exemplares
 
@@ -115,3 +115,13 @@ Operações mutáveis de circulação usam READ_COMMITTED e bloqueios pessimista
 V4 cria coluna virtual gerada active_copy_id e UNIQUE para impedir dois empréstimos ativos do exemplar, mantendo múltiplos históricos devolvidos. A coluna não é escrita pelo JPA ou exposta na API. CHECKs garantem consistência básica de datas e FKs preservam histórico. Nem toda regra do serviço é garantida por SQL: acesso direto ao banco é administrativo, não alternativa pública à API.
 
 Testes reais de concorrência cobrem empréstimos, devoluções, retirada versus empréstimo e desativação com bloqueio do leitor. Isso não prova ausência de todos os deadlocks ou valida todas as possíveis falhas de rede. Resultado incerto de commit deve ser consultado antes de repetir a ação.
+
+## Busca do catálogo
+
+GET `/api/books` aceita filtros opcionais combinados por AND: `title` (substring), `author` (substring do nome), `isbn` (exato após normalização) e `categoryId` (id). Exemplo: `/api/books?title=Livro&author=Machado&page=0&size=20`. Textos vazios são ignorados; ISBN inválido e categoria não positiva retornam 400. Categoria positiva inexistente retorna lista vazia. A busca respeita collation do MySQL, sem distinção de caixa/acentos. `%` e `_` são literais, não curingas. Ordem fixa por id. `EXISTS` evita repetir livros com múltiplos autores correspondentes.
+
+## Dashboard
+
+GET `/api/dashboard?limit=5` retorna totalBooks (edições), totalCopies (inclui retirados), totalReaders (inclui inativos), availableCopies, activeLoans (inclui atrasados), overdueLoans, mostBorrowed e recentLoans. Limit de 1 a 20 controla tamanho do ranking e recentes; inválido retorna 400. Livros sem empréstimos não entram no ranking. Empate é resolvido por bookId crescente; recentes por loanDate e id decrescentes.
+
+Dashboard usa consultas parametrizadas com JdbcTemplate dentro de uma transação REPEATABLE_READ: todas as consultas leem o mesmo snapshot InnoDB e usam uma única data de referência. Não há garantia de atualização em tempo real. Ranking conta eventos ativos e devolvidos, sem juntar autores para multiplicar resultados. Nenhuma migration adicional foi necessária neste incremento.

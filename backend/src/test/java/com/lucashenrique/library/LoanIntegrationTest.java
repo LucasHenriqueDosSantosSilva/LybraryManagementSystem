@@ -139,4 +139,44 @@ class LoanIntegrationTest {
   mvc.perform(get("/api/loans?status=INVALID")).andExpect(status().isBadRequest());
   mvc.perform(get("/api/loans?readerId=9223372036854775807")).andExpect(status().isNotFound());
  }
+
+ @Test void dashboardHasZeroActivityBeforeFirstLoan() throws Exception {
+  mvc.perform(get("/api/dashboard")).andExpect(status().isOk()).andExpect(jsonPath("$.totalBooks").value(1))
+   .andExpect(jsonPath("$.totalCopies").value(1)).andExpect(jsonPath("$.totalReaders").value(1))
+   .andExpect(jsonPath("$.availableCopies").value(1)).andExpect(jsonPath("$.activeLoans").value(0))
+   .andExpect(jsonPath("$.overdueLoans").value(0)).andExpect(jsonPath("$.mostBorrowed").isEmpty()).andExpect(jsonPath("$.recentLoans").isEmpty());
+  mvc.perform(get("/api/dashboard?limit=21")).andExpect(status().isBadRequest());
+ }
+ @Test void dashboardCountsEventsWithoutMultiplyingAuthors() throws Exception {
+  long other=create("authors",Map.of("name","Autor adicional"));
+  try {
+   jdbc.update("INSERT INTO book_authors(book_id,author_id) VALUES(?,?)",book,other);
+   long first=loan();mvc.perform(post("/api/loans/"+first+"/return")).andExpect(status().isOk());
+   long second=loan();clock.date("2026-10-23");
+   mvc.perform(get("/api/dashboard?limit=1")).andExpect(status().isOk()).andExpect(jsonPath("$.totalBooks").value(1))
+    .andExpect(jsonPath("$.activeLoans").value(1)).andExpect(jsonPath("$.overdueLoans").value(1))
+    .andExpect(jsonPath("$.availableCopies").value(0)).andExpect(jsonPath("$.mostBorrowed[0].loanCount").value(2))
+    .andExpect(jsonPath("$.recentLoans[0].id").value(second)).andExpect(jsonPath("$.recentLoans[0].status").value("OVERDUE"));
+   mvc.perform(post("/api/loans/"+second+"/return")).andExpect(status().isOk());
+   mvc.perform(post("/api/copies/"+copy+"/withdrawal")).andExpect(status().isOk());
+   mvc.perform(get("/api/dashboard")).andExpect(jsonPath("$.availableCopies").value(0)).andExpect(jsonPath("$.totalCopies").value(1))
+    .andExpect(jsonPath("$.activeLoans").value(0)).andExpect(jsonPath("$.overdueLoans").value(0));
+  } finally {jdbc.update("DELETE FROM book_authors WHERE book_id=? AND author_id=?",book,other);jdbc.update("DELETE FROM authors WHERE id=?",other);}
+ }
+ @Test void catalogFiltersUseCanonicalIsbnAndDoNotDuplicateBooks() throws Exception {
+  long other=create("authors",Map.of("name","Autor adicional"));
+  try {
+   jdbc.update("INSERT INTO book_authors(book_id,author_id) VALUES(?,?)",book,other);
+   mvc.perform(get("/api/books").param("author","Autor").param("title","livro").param("categoryId",Long.toString(category)).param("isbn","0-306-40615-2"))
+    .andExpect(status().isOk()).andExpect(jsonPath("$.page.totalElements").value(1)).andExpect(jsonPath("$.content[0].authors.length()").value(2));
+   mvc.perform(get("/api/books").param("categoryId",Long.toString(Long.MAX_VALUE))).andExpect(jsonPath("$.page.totalElements").value(0));
+   mvc.perform(get("/api/books?isbn=invalid")).andExpect(status().isBadRequest());
+   mvc.perform(get("/api/books?categoryId=0")).andExpect(status().isBadRequest());
+  } finally {jdbc.update("DELETE FROM book_authors WHERE book_id=? AND author_id=?",book,other);jdbc.update("DELETE FROM authors WHERE id=?",other);}
+ }
+ @Test void catalogTreatsPercentAndUnderscoreAsLiteralText() throws Exception {
+  jdbc.update("UPDATE books SET title=? WHERE id=?","100%_Livro",book);
+  mvc.perform(get("/api/books").param("title","%_")).andExpect(status().isOk()).andExpect(jsonPath("$.page.totalElements").value(1));
+  mvc.perform(get("/api/books").param("title","No%")).andExpect(jsonPath("$.page.totalElements").value(0));
+ }
 }

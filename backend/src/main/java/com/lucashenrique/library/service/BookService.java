@@ -28,7 +28,13 @@ public class BookService {
     @Transactional(readOnly=true)
     public BookResponse get(Long id){return response(books.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Livro não encontrado.")));}
     @Transactional(readOnly=true)
-    public Page<BookResponse> list(int page,int size){return books.findAll(PageRequest.of(page,size,Sort.by("id"))).map(this::response);}
+    public Page<BookResponse> list(int page,int size,String title,String isbn,Long categoryId,String author){
+        if(categoryId!=null&&categoryId<1)throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Categoria inválida.");
+        String canonical=null;
+        if(isbn!=null&&!isbn.isBlank())try{canonical=Isbn.canonicalize(isbn);}catch(IllegalArgumentException ex){throw new ResponseStatusException(HttpStatus.BAD_REQUEST,ex.getMessage());}
+        return books.search(filter(title),canonical,categoryId,filter(author),PageRequest.of(page,size)).map(this::response);
+    }
+    private String filter(String value){return value==null||value.isBlank()?null:value.strip();}
     public void delete(Long id){
         Book book=books.locked(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Livro não encontrado."));
         books.delete(book);books.flush();
