@@ -4,7 +4,7 @@ Projeto acadêmico para as disciplinas de Projeto de Banco de Dados e Análise e
 
 ## Estado atual
 
-Etapas 1–7: análise, escopo, casos de uso, modelagem, normalização, arquitetura e estrutura do repositório. **Ainda não há aplicação, banco criado, dependências instaladas ou testes automatizados.** As tecnologias abaixo são propostas, não implementadas.
+Etapas 1–7: análise, escopo, casos de uso, modelagem, normalização, arquitetura e estrutura do repositório. **Etapa 8 iniciada:** backend executável com CRUD de categorias, migration MySQL e 7 testes passando. Livros, leitores, exemplares, empréstimos e frontend ainda não estão implementados.
 
 Leia a [análise inicial](docs/requirements/initial-analysis.md), que registra escopo, requisitos, regras, arquitetura, tecnologias e plano de evolução.
 
@@ -20,13 +20,15 @@ A [arquitetura proposta](docs/architecture/architecture.md) registra responsabil
 
 A [estrutura de desenvolvimento](docs/development/repository-structure.md) distingue arquivos atuais e futuros. As [convenções de contribuição](CONTRIBUTING.md) registram o fluxo Git, segurança e critérios de conclusão.
 
-## Stack proposta
+Veja [execução do backend](backend/README.md) e [evidências do primeiro incremento](docs/testing/baseline-increment-1.md).
 
-Java 21, Spring Boot, Maven, MySQL e Flyway no backend; React, TypeScript e Vite no frontend. A adoção de bibliotecas adicionais será justificada conforme surgirem necessidades.
+## Tecnologias
+
+Implementados: Java 21, Spring Boot, Maven Wrapper, MySQL, Flyway, JPA, Bean Validation, JUnit e Mockito. React, TypeScript e Vite continuam previstos para o frontend.
 
 ## Desenvolvimento
 
-A análise inicial foi aprovada para continuidade. A próxima etapa começa a baseline do backend de forma incremental, seguindo a modelagem e as decisões de arquitetura. Os comandos de execução, configuração e testes serão documentados quando existirem e forem verificados. Não há demonstração publicada nem licença definida nesta etapa.
+A análise inicial foi aprovada para continuidade. A baseline do backend está em desenvolvimento incremental. O próximo incremento amplia o catálogo com autores e livros, seguindo a modelagem e as decisões de arquitetura. Não há demonstração publicada nem licença definida nesta etapa.
 
 ## Git
 
