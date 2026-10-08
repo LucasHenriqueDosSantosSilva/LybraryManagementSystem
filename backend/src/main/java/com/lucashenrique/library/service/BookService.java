@@ -8,17 +8,21 @@ import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.*;
-@Service @Transactional
+@Service @Transactional(isolation=org.springframework.transaction.annotation.Isolation.READ_COMMITTED)
 public class BookService {
     private final BookRepository books;
+    private final LoanRepository loans;
     private final AuthorRepository authors;
     private final CategoryRepository categories;
-    public BookService(BookRepository books,AuthorRepository authors,CategoryRepository categories){this.books=books;this.authors=authors;this.categories=categories;}
+    public BookService(BookRepository books,AuthorRepository authors,CategoryRepository categories,LoanRepository loans){this.loans=loans;this.books=books;this.authors=authors;this.categories=categories;}
     public BookResponse create(BookRequest request){
         Book book=new Book();apply(book,request);books.saveAndFlush(book);return response(book);
     }
     public BookResponse update(Long id,BookRequest request){
-        Book book=books.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Livro não encontrado."));
+        Book book=books.locked(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Livro não encontrado."));
+        String normalized;
+        try{normalized=Isbn.canonicalize(request.isbn());}catch(IllegalArgumentException ex){throw new ResponseStatusException(HttpStatus.BAD_REQUEST,ex.getMessage());}
+        if(!book.getIsbn().equals(normalized)&&loans.existsByCopyBookId(id))throw new ResponseStatusException(HttpStatus.CONFLICT,"ISBN não pode mudar em livro com histórico.");
         apply(book,request);books.flush();return response(book);
     }
     @Transactional(readOnly=true)
@@ -26,7 +30,7 @@ public class BookService {
     @Transactional(readOnly=true)
     public Page<BookResponse> list(int page,int size){return books.findAll(PageRequest.of(page,size,Sort.by("id"))).map(this::response);}
     public void delete(Long id){
-        Book book=books.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Livro não encontrado."));
+        Book book=books.locked(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Livro não encontrado."));
         books.delete(book);books.flush();
     }
     private void apply(Book book,BookRequest request){

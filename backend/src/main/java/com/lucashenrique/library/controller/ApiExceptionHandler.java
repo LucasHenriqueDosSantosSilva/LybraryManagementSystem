@@ -37,6 +37,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         if (cause instanceof SQLException sql && (sql.getErrorCode() == 1451 || sql.getErrorCode() == 1452) && sql.getMessage().contains("fk_copies_book")) {
             return ResponseEntity.status(409).body(ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, "O livro possui exemplares ou não está mais disponível para associação."));
         }
+        if (cause instanceof SQLException sql && ((sql.getErrorCode()==1062 && sql.getMessage().contains("uk_loans_active_copy"))
+                || ((sql.getErrorCode()==1451||sql.getErrorCode()==1452) && (sql.getMessage().contains("fk_loans_reader")||sql.getMessage().contains("fk_loans_copy"))))) {
+            return ResponseEntity.status(409).body(ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT,"A operação conflita com o histórico ou a disponibilidade do exemplar."));
+        }
         LOG.error("Falha de integridade não classificada", ex);
         return ResponseEntity.internalServerError().body(ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Não foi possível concluir a operação."));
     }

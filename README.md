@@ -4,7 +4,7 @@ Projeto acadêmico para as disciplinas de Projeto de Banco de Dados e Análise e
 
 ## Estado atual
 
-Etapas 1–7: análise, escopo, casos de uso, modelagem, normalização, arquitetura e estrutura do repositório. **Etapa 8 iniciada:** backend executável com CRUD de categorias, autores, livros, leitores e exemplares, migrations MySQL e 27 testes passando. Empréstimos, relatórios e frontend ainda não estão implementados.
+Etapas 1–7: análise, escopo, casos de uso, modelagem, normalização, arquitetura e estrutura do repositório. **Etapa 8 iniciada:** backend executável com CRUD de categorias, autores, livros, leitores e exemplares, empréstimos e devoluções, migrations MySQL e 39 testes passando. Dashboard, filtros do catálogo e frontend ainda não estão implementados.
 
 Leia a [análise inicial](docs/requirements/initial-analysis.md), que registra escopo, requisitos, regras, arquitetura, tecnologias e plano de evolução.
 
@@ -20,7 +20,7 @@ A [arquitetura proposta](docs/architecture/architecture.md) registra responsabil
 
 A [estrutura de desenvolvimento](docs/development/repository-structure.md) distingue arquivos atuais e futuros. As [convenções de contribuição](CONTRIBUTING.md) registram o fluxo Git, segurança e critérios de conclusão.
 
-Veja [execução do backend](backend/README.md) e [evidências do primeiro incremento](docs/testing/baseline-increment-1.md) e [validação do catálogo](docs/testing/baseline-increment-2.md) e [validação de leitores e exemplares](docs/testing/baseline-increment-3.md).
+Veja [execução do backend](backend/README.md) e [evidências do primeiro incremento](docs/testing/baseline-increment-1.md) e [validação do catálogo](docs/testing/baseline-increment-2.md) e [validação de leitores e exemplares](docs/testing/baseline-increment-3.md) e [validação da circulação](docs/testing/baseline-increment-4.md).
 
 ## Tecnologias
 
@@ -28,7 +28,7 @@ Implementados: Java 21, Spring Boot, Maven Wrapper, MySQL, Flyway, JPA, Bean Val
 
 ## Desenvolvimento
 
-A análise inicial foi aprovada para continuidade. A baseline do backend está em desenvolvimento incremental. O próximo incremento implementa empréstimos e devoluções, seguindo a modelagem e as decisões de arquitetura. Não há demonstração publicada nem licença definida nesta etapa.
+A análise inicial foi aprovada para continuidade. A baseline do backend está em desenvolvimento incremental. O próximo incremento completa consultas do catálogo e dashboard, seguindo a modelagem e as decisões de arquitetura. Não há demonstração publicada nem licença definida nesta etapa.
 
 ## Git
 
