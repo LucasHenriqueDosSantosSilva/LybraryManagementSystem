@@ -4,7 +4,7 @@ Projeto acadêmico para as disciplinas de Projeto de Banco de Dados e Análise e
 
 ## Estado atual
 
-Etapas 1–5: análise, escopo, casos de uso, modelagem e normalização do banco. **Ainda não há aplicação, banco criado, dependências instaladas ou testes automatizados.** As tecnologias abaixo são propostas, não implementadas.
+Etapas 1–6: análise, escopo, casos de uso, modelagem, normalização e arquitetura. **Ainda não há aplicação, banco criado, dependências instaladas ou testes automatizados.** As tecnologias abaixo são propostas, não implementadas.
 
 Leia a [análise inicial](docs/requirements/initial-analysis.md), que registra escopo, requisitos, regras, arquitetura, tecnologias e plano de evolução.
 
@@ -16,13 +16,15 @@ O [modelo inicial do banco](docs/database/initial-model.md) registra o dicionár
 
 A [análise de normalização](docs/database/normalization.md) apresenta chaves candidatas, dependências funcionais e justificativas de 1FN, 2FN e 3FN, distinguindo modelo lógico e mecanismos físicos.
 
+A [arquitetura proposta](docs/architecture/architecture.md) registra responsabilidades, módulos, contratos, transações e o plano da baseline didática.
+
 ## Stack proposta
 
 Java 21, Spring Boot, Maven, MySQL e Flyway no backend; React, TypeScript e Vite no frontend. A adoção de bibliotecas adicionais será justificada conforme surgirem necessidades.
 
 ## Desenvolvimento
 
-A análise inicial foi aprovada para continuidade. A próxima etapa define a arquitetura; a implementação seguirá a modelagem e as decisões de arquitetura. Os comandos de execução, configuração e testes serão documentados quando existirem e forem verificados. Não há demonstração publicada nem licença definida nesta etapa.
+A análise inicial foi aprovada para continuidade. A próxima etapa organiza a estrutura de desenvolvimento; a implementação seguirá a modelagem e as decisões de arquitetura. Os comandos de execução, configuração e testes serão documentados quando existirem e forem verificados. Não há demonstração publicada nem licença definida nesta etapa.
 
 ## Git
 
