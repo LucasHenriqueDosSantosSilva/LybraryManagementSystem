@@ -29,3 +29,4 @@ export async function references<T>(resource: string, signal: AbortSignal): Prom
 }
 export type Reader = { id: number; registrationNumber: string; name: string; email: string | null; active: boolean };
 export type Copy = { id: number; inventoryCode: string; bookId: number; circulationStatus: string; available: boolean };
+export type Loan = { id: number; readerId: number; copyId: number; bookId: number; loanDate: string; dueDate: string; returnedDate: string | null; status: 'ACTIVE' | 'OVERDUE' | 'RETURNED' };
