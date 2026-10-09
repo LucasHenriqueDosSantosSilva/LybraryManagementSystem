@@ -4,6 +4,8 @@ import { randomUUID } from 'node:crypto';
 
 test('complete circulation through real UI and API', async ({ page, request }) => {
   if (process.env.E2E_DB_SCHEMA !== 'library_test') throw new Error('Use the exclusive library_test schema and set E2E_DB_SCHEMA=library_test.');
+  const base = process.env.E2E_BASE_URL || 'http://127.0.0.1:5174';
+  if (new URL(base).hostname !== '127.0.0.1') throw new Error('Use a local isolated server.');
   const suffix = randomUUID().slice(0, 12);
   const created: { resource: string; id: number }[] = [];
   const registration = `B-${suffix}`.toUpperCase();
@@ -47,9 +49,9 @@ test('complete circulation through real UI and API', async ({ page, request }) =
     // Only this fixture's history; never delete existing readers' circulation.
     if (loanId && readerId && copyId) {
       const sql = `DELETE l FROM loans l JOIN readers r ON r.id=l.reader_id WHERE l.id=${Number(loanId)} AND l.reader_id=${Number(readerId)} AND l.copy_id=${Number(copyId)} AND r.registration_number='${registration}';`;
-      execFileSync('docker', ['exec', '-i', 'library-mysql', 'sh', '-c', 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql -uroot library_test'], { input: sql, stdio: ['pipe', 'ignore', 'pipe'] });
+      execFileSync('docker', ['exec', '-i', process.env.E2E_MYSQL_CONTAINER || 'library-mysql', 'sh', '-c', 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql -uroot library_test'], { input: sql, stdio: ['pipe', 'ignore', 'pipe'] });
     }
-    for (const record of created.reverse()) expect((await fetch(`http://127.0.0.1:5174/api/${record.resource}/${record.id}`, { method: 'DELETE' })).status).toBe(204);
+    for (const record of created.reverse()) expect((await fetch(`${base}/api/${record.resource}/${record.id}`, { method: 'DELETE' })).status).toBe(204);
   }
 });
 

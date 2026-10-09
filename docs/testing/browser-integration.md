@@ -45,3 +45,5 @@ Fixtures têm nomes/matrícula/patrimônio únicos. A limpeza de histórico rest
 Os primeiros ensaios revelaram consultas imprecisas do teste a selects e uma comparação de matrícula sem sua normalização em maiúsculas. Foram corrigidos nos testes; fixtures desses ensaios foram identificadas e removidas individualmente. Não houve regressão da regra de negócio. Traces/screenshots de falha são ignorados no Git; screenshots documentais selecionados são versionados.
 
 Ainda não há auditoria formal de acessibilidade, testes de leitor de tela, Firefox/WebKit, carga ou rede instável no navegador. A seleção múltipla foi exercitada para cadastro com um autor; múltiplos autores seguem cobertos nos testes de componentes. Próxima etapa: Docker para reprodução do projeto.
+
+Os mesmos cenários foram verificados contra os containers na etapa 15. E2E_BASE_URL permite escolher a origem local e E2E_MYSQL_CONTAINER identifica o container de testes para limpeza própria; veja [Docker](../../docker/README.md).
