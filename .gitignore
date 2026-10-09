@@ -8,3 +8,6 @@ target/
 .vscode/
 *.log
 .DS_Store
+
+frontend/test-results/
+frontend/playwright-report/
