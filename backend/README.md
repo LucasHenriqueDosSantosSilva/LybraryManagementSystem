@@ -37,7 +37,7 @@ Para testes de integração, configure **DB_URL para um schema MySQL de testes s
 ./mvnw package
 ```
 
-A suíte contém 10 testes unitários (2 com Mockito, 3 de ISBN e 5 de status), 3 testes de tradução HTTP com MockMvc standalone e 49 testes de integração Spring Boot/MockMvc contra MySQL. Usa transações com rollback para dados de teste, mas Flyway cria schema e histórico de migrations; nunca apontar os testes para um banco de produção. Testes de categoria usam rollback; testes de catálogo confirmam operações e limpam apenas seus registros. Use um schema de testes dedicado sem dados preexistentes. Os testes ainda não demonstram TDD: foram escritos neste incremento, sem histórico RED/GREEN registrado.
+A suíte contém 16 testes unitários (2 com Mockito, 9 de ISBN e 5 de status), 3 testes de tradução HTTP com MockMvc standalone e 50 testes de integração Spring Boot/MockMvc contra MySQL. Usa transações com rollback para dados de teste, mas Flyway cria schema e histórico de migrations; nunca apontar os testes para um banco de produção. Testes de categoria usam rollback; testes de catálogo confirmam operações e limpam apenas seus registros. Use um schema de testes dedicado sem dados preexistentes. O ciclo RED/GREEN/REFACTOR registrado para a normalização de whitespace no ISBN demonstra TDD; os testes anteriores e a regressão HTTP acrescentada depois da implementação são distinguidos na documentação.
 
 ## Ambiente de nuvem atual
 
@@ -141,3 +141,5 @@ DashboardService coordena data e transação; DashboardRepository executa as con
 PageParameters centraliza defaults e validação de page/size dos seis endpoints de listagem. As rotas e respostas não mudaram; veja [contrato de paginação](../docs/after-refactoring/step-7-pagination.md). O dashboard mantém seu limit separado.
 
 Os pacotes `catalog`, `readers`, `loans` e `reporting` agrupam as camadas por domínio. Infraestrutura compartilhada permanece em `api`, `exception` e `configuration`. São agrupamentos lógicos com dependências existentes preservadas; veja [organização por domínio e comparação](../docs/after-refactoring/step-8-domain-organization.md).
+
+A normalização de ISBN aceita whitespace Unicode, mantendo checksum e unicidade. Veja [TDD do ISBN](../docs/testing/tdd-isbn-whitespace.md) e [estratégia de testes](../docs/testing/strategy.md).

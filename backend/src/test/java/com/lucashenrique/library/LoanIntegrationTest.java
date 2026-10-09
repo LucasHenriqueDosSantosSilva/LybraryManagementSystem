@@ -177,6 +177,16 @@ class LoanIntegrationTest {
    mvc.perform(get("/api/books?categoryId=0")).andExpect(status().isBadRequest());
   } finally {jdbc.update("DELETE FROM book_authors WHERE book_id=? AND author_id=?",book,other);jdbc.update("DELETE FROM authors WHERE id=?",other);}
  }
+ @Test void pastedIsbnIsNormalizedInWritesAndSearchWithoutWeakeningValidation() throws Exception {
+  var update=Map.of("isbn","978\u00a00\u00a0306\u00a040615\u00a07","title","Livro","publicationYear",2000,"categoryId",category,"authorIds",List.of(author));
+  mvc.perform(put("/api/books/"+book).contentType("application/json").content(json.writeValueAsString(update)))
+   .andExpect(status().isOk()).andExpect(jsonPath("$.isbn").value("9780306406157"));
+  mvc.perform(get("/api/books").param("isbn","978\u202f0\u202f306\u202f40615\u202f7"))
+   .andExpect(status().isOk()).andExpect(jsonPath("$.page.totalElements").value(1)).andExpect(jsonPath("$.content[0].id").value(book));
+  mvc.perform(get("/api/books").param("isbn","978\t0\t306\t40615\t8")).andExpect(status().isBadRequest());
+  mvc.perform(post("/api/books").contentType("application/json").content(json.writeValueAsString(update)))
+   .andExpect(status().isConflict());
+ }
  @Test void catalogTreatsPercentAndUnderscoreAsLiteralText() throws Exception {
   jdbc.update("UPDATE books SET title=? WHERE id=?","100%_Livro",book);
   mvc.perform(get("/api/books").param("title","%_")).andExpect(status().isOk()).andExpect(jsonPath("$.page.totalElements").value(1));

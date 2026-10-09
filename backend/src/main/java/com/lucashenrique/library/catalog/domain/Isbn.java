@@ -1,11 +1,16 @@
 package com.lucashenrique.library.catalog.domain;
 
+import java.util.regex.Pattern;
+
 public final class Isbn {
+  private static final Pattern SEPARATORS =
+      Pattern.compile("[-\\s]", Pattern.UNICODE_CHARACTER_CLASS);
+
   private Isbn() {}
 
   public static String canonicalize(String input) {
     if (input == null) throw new IllegalArgumentException("Informe um ISBN válido.");
-    String value = input.replace("-", "").replace(" ", "");
+    String value = SEPARATORS.matcher(input).replaceAll("");
     if (value.matches("[0-9]{9}[0-9Xx]")) {
       int sum = 0;
       for (int i = 0; i < 10; i++)
