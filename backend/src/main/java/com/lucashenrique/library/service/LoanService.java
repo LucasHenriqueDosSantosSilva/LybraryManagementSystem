@@ -1,4 +1,7 @@
 package com.lucashenrique.library.service;
+import com.lucashenrique.library.exception.InvalidInputException;
+import com.lucashenrique.library.exception.BusinessConflictException;
+import com.lucashenrique.library.exception.ResourceNotFoundException;
 import com.lucashenrique.library.dto.*;
 import com.lucashenrique.library.repository.*;
 import com.lucashenrique.library.entity.Loan;
@@ -6,8 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 import java.time.*;
 @Service @Transactional(isolation=Isolation.READ_COMMITTED)
 public class LoanService {
@@ -39,7 +40,7 @@ public class LoanService {
  @Transactional(readOnly=true) public LoanResponse get(Long id){return response(loans.findById(id).orElseThrow(()->missing("Empréstimo")),LocalDate.now(clock));}
  @Transactional(readOnly=true) public Page<LoanResponse> list(Long readerId,String status,int page,int size){
   if(readerId!=null&&!readers.existsById(readerId))throw missing("Leitor");
-  if(status!=null&&!java.util.Set.of("ACTIVE","RETURNED","OVERDUE").contains(status))throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Filtro de status inválido.");
+  if(status!=null&&!java.util.Set.of("ACTIVE","RETURNED","OVERDUE").contains(status))throw new InvalidInputException("Filtro de status inválido.");
   LocalDate today=LocalDate.now(clock);
   return loans.search(readerId,status,today,PageRequest.of(page,size,Sort.by(Sort.Direction.DESC,"loanDate","id"))).map(l->response(l,today));
  }
@@ -47,6 +48,6 @@ public class LoanService {
   String status=l.getReturnedDate()!=null?"RETURNED":l.getDueDate().isBefore(today)?"OVERDUE":"ACTIVE";
   return new LoanResponse(l.getId(),l.getReader().getId(),l.getCopy().getId(),l.getCopy().getBook().getId(),l.getLoanDate(),l.getDueDate(),l.getReturnedDate(),status);
  }
- private ResponseStatusException missing(String name){return new ResponseStatusException(HttpStatus.NOT_FOUND,name+" não encontrado.");}
- private ResponseStatusException conflict(String message){return new ResponseStatusException(HttpStatus.CONFLICT,message);}
+ private ResourceNotFoundException missing(String name){return new ResourceNotFoundException(name+" não encontrado.");}
+ private BusinessConflictException conflict(String message){return new BusinessConflictException(message);}
 }

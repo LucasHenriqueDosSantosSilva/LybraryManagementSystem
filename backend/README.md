@@ -37,7 +37,7 @@ Para testes de integração, configure **DB_URL para um schema MySQL de testes s
 ./mvnw package
 ```
 
-A suíte contém 4 testes unitários (1 com Mockito e 3 de ISBN) e 39 testes Spring Boot/MockMvc contra MySQL. Usa transações com rollback para dados de teste, mas Flyway cria schema e histórico de migrations; nunca apontar os testes para um banco de produção. Testes de categoria usam rollback; testes de catálogo confirmam operações e limpam apenas seus registros. Use um schema de testes dedicado sem dados preexistentes. Os testes ainda não demonstram TDD: foram escritos neste incremento, sem histórico RED/GREEN registrado.
+A suíte contém 5 testes unitários (2 com Mockito e 3 de ISBN), 3 testes de tradução HTTP com MockMvc standalone e 39 testes de integração Spring Boot/MockMvc contra MySQL. Usa transações com rollback para dados de teste, mas Flyway cria schema e histórico de migrations; nunca apontar os testes para um banco de produção. Testes de categoria usam rollback; testes de catálogo confirmam operações e limpam apenas seus registros. Use um schema de testes dedicado sem dados preexistentes. Os testes ainda não demonstram TDD: foram escritos neste incremento, sem histórico RED/GREEN registrado.
 
 ## Ambiente de nuvem atual
 
@@ -55,7 +55,7 @@ O helper é específico desta máquina e não substitui os pré-requisitos de ou
 
 ## Organização didática
 
-Pacotes globais `controller`, `service`, `repository`, `entity` e `dto` deixam a funcionalidade dispersa. `CategoryService` repete busca e mapeamento nas operações e depende de HTTP por `ResponseStatusException`. São candidatos plausíveis para análise posterior, não justificativa para refatorar antes de completar a baseline. Integridade, validação e testes são preservados desde o início.
+Pacotes globais `controller`, `service`, `repository`, `entity` e `dto` deixam a funcionalidade dispersa. `CategoryService` repete busca e mapeamento nas operações. Na tag da baseline também dependia de HTTP por `ResponseStatusException`; essa dependência foi removida no primeiro incremento de refatoração. São candidatos plausíveis para análise posterior, não justificativa para refatorar antes de completar a baseline. Integridade, validação e testes são preservados desde o início.
 
 ## Autores e livros
 
@@ -125,3 +125,7 @@ GET `/api/books` aceita filtros opcionais combinados por AND: `title` (substring
 GET `/api/dashboard?limit=5` retorna totalBooks (edições), totalCopies (inclui retirados), totalReaders (inclui inativos), availableCopies, activeLoans (inclui atrasados), overdueLoans, mostBorrowed e recentLoans. Limit de 1 a 20 controla tamanho do ranking e recentes; inválido retorna 400. Livros sem empréstimos não entram no ranking. Empate é resolvido por bookId crescente; recentes por loanDate e id decrescentes.
 
 Dashboard usa consultas parametrizadas com JdbcTemplate dentro de uma transação REPEATABLE_READ: todas as consultas leem o mesmo snapshot InnoDB e usam uma única data de referência. Não há garantia de atualização em tempo real. Ranking conta eventos ativos e devolvidos, sem juntar autores para multiplicar resultados. Nenhuma migration adicional foi necessária neste incremento.
+
+## Refatoração em andamento
+
+Services agora lançam ResourceNotFoundException, BusinessConflictException ou InvalidInputException, sem conhecer HttpStatus. ApiExceptionHandler mantém a tradução 404/409/400 e o contrato ProblemDetail. A organização por camadas e os demais problemas da baseline continuam em análise; veja [primeiro incremento de refatoração](../docs/after-refactoring/step-1-errors.md).

@@ -1,12 +1,11 @@
 package com.lucashenrique.library.service;
+import com.lucashenrique.library.exception.ResourceNotFoundException;
 import com.lucashenrique.library.dto.*;
 import com.lucashenrique.library.entity.Category;
 import com.lucashenrique.library.repository.CategoryRepository;
 import org.springframework.data.domain.*;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 @Service
 @Transactional
 public class CategoryService {
@@ -22,17 +21,17 @@ public class CategoryService {
     }
     @Transactional(readOnly = true)
     public CategoryResponse get(Long id) {
-        Category c = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada."));
+        Category c = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada."));
         return new CategoryResponse(c.getId(), c.getName());
     }
     public CategoryResponse update(Long id, CategoryRequest request) {
-        Category c = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada."));
+        Category c = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada."));
         c.setName(request.name().strip());
         repository.flush();
         return new CategoryResponse(c.getId(), c.getName());
     }
     public void delete(Long id) {
-        Category c = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada."));
+        Category c = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada."));
         repository.delete(c);
         repository.flush();
     }
