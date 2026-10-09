@@ -1,0 +1,39 @@
+{
+  "revision": "060c35a9dba7adf7b0361217b12859d921c1a840",
+  "method": "count org.hibernate.SQL SELECT log events around one HTTP request; isolated process, fresh persistence context per request",
+  "samples": [
+    {
+      "page_size": 1,
+      "returned_copies": 1,
+      "select_events": 3,
+      "statements": [
+        "select bc1_0.id,bc1_0.book_id,bc1_0.circulation_status,bc1_0.inventory_code from book_copies bc1_0 order by bc1_0.id limit ?,?",
+        "select count(bc1_0.id) from book_copies bc1_0",
+        "select l1_0.id from loans l1_0 join book_copies c1_0 on c1_0.id=l1_0.copy_id where c1_0.id=? and l1_0.returned_date is null limit ?"
+      ]
+    },
+    {
+      "page_size": 2,
+      "returned_copies": 2,
+      "select_events": 4,
+      "statements": [
+        "select bc1_0.id,bc1_0.book_id,bc1_0.circulation_status,bc1_0.inventory_code from book_copies bc1_0 order by bc1_0.id limit ?,?",
+        "select count(bc1_0.id) from book_copies bc1_0",
+        "select l1_0.id from loans l1_0 join book_copies c1_0 on c1_0.id=l1_0.copy_id where c1_0.id=? and l1_0.returned_date is null limit ?",
+        "select l1_0.id from loans l1_0 join book_copies c1_0 on c1_0.id=l1_0.copy_id where c1_0.id=? and l1_0.returned_date is null limit ?"
+      ]
+    },
+    {
+      "page_size": 3,
+      "returned_copies": 3,
+      "select_events": 5,
+      "statements": [
+        "select bc1_0.id,bc1_0.book_id,bc1_0.circulation_status,bc1_0.inventory_code from book_copies bc1_0 order by bc1_0.id limit ?,?",
+        "select count(bc1_0.id) from book_copies bc1_0",
+        "select l1_0.id from loans l1_0 join book_copies c1_0 on c1_0.id=l1_0.copy_id where c1_0.id=? and l1_0.returned_date is null limit ?",
+        "select l1_0.id from loans l1_0 join book_copies c1_0 on c1_0.id=l1_0.copy_id where c1_0.id=? and l1_0.returned_date is null limit ?",
+        "select l1_0.id from loans l1_0 join book_copies c1_0 on c1_0.id=l1_0.copy_id where c1_0.id=? and l1_0.returned_date is null limit ?"
+      ]
+    }
+  ]
+}

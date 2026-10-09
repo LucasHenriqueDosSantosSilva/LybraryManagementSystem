@@ -1,0 +1,36 @@
+{
+  "revision": "b4bc65fd5c431682019ef52061c4eb12703e726b",
+  "method": "count org.hibernate.SQL SELECT log events around one HTTP request; isolated process, fresh persistence context per request",
+  "samples": [
+    {
+      "page_size": 1,
+      "returned_copies": 1,
+      "select_events": 3,
+      "statements": [
+        "select bc1_0.id,bc1_0.book_id,bc1_0.circulation_status,bc1_0.inventory_code from book_copies bc1_0 order by bc1_0.id limit ?,?",
+        "select count(bc1_0.id) from book_copies bc1_0",
+        "select l1_0.copy_id from loans l1_0 where l1_0.returned_date is null and l1_0.copy_id in (?)"
+      ]
+    },
+    {
+      "page_size": 2,
+      "returned_copies": 2,
+      "select_events": 3,
+      "statements": [
+        "select bc1_0.id,bc1_0.book_id,bc1_0.circulation_status,bc1_0.inventory_code from book_copies bc1_0 order by bc1_0.id limit ?,?",
+        "select count(bc1_0.id) from book_copies bc1_0",
+        "select l1_0.copy_id from loans l1_0 where l1_0.returned_date is null and l1_0.copy_id in (?,?)"
+      ]
+    },
+    {
+      "page_size": 3,
+      "returned_copies": 3,
+      "select_events": 3,
+      "statements": [
+        "select bc1_0.id,bc1_0.book_id,bc1_0.circulation_status,bc1_0.inventory_code from book_copies bc1_0 order by bc1_0.id limit ?,?",
+        "select count(bc1_0.id) from book_copies bc1_0",
+        "select l1_0.copy_id from loans l1_0 where l1_0.returned_date is null and l1_0.copy_id in (?,?,?)"
+      ]
+    }
+  ]
+}
