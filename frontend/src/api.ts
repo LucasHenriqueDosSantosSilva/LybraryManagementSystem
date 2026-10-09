@@ -27,3 +27,5 @@ export async function references<T>(resource: string, signal: AbortSignal): Prom
     if (page + 1 >= result.page.totalPages) return items;
   }
 }
+export type Reader = { id: number; registrationNumber: string; name: string; email: string | null; active: boolean };
+export type Copy = { id: number; inventoryCode: string; bookId: number; circulationStatus: string; available: boolean };
