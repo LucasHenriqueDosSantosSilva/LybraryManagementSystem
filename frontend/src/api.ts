@@ -15,3 +15,15 @@ export async function request<T>(path: string, options: RequestInit = {}): Promi
   if (response.status === 204) return undefined as T;
   return response.json();
 }
+
+export type Author = { id: number; name: string };
+export type Book = { id: number; title: string; isbn: string; publicationYear: number; description: string | null; categoryId: number; authors: Author[] };
+// Reference selectors must include all pages, not only the first hundred records.
+export async function references<T>(resource: string, signal: AbortSignal): Promise<T[]> {
+  const items: T[] = [];
+  for (let page = 0; ; page++) {
+    const result = await request<Page<T>>(`/${resource}?page=${page}&size=100`, { signal });
+    items.push(...result.content);
+    if (page + 1 >= result.page.totalPages) return items;
+  }
+}

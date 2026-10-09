@@ -13,3 +13,12 @@ test('reports non-JSON server failure with a usable fallback', async () => {
   vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('unavailable', { status: 502 })));
   await expect(request('/categories')).rejects.toBeInstanceOf(ApiError);
 });
+
+test('loads reference data beyond the first page', async () => {
+  const { references } = await import('./api');
+  const fetchMock = vi.fn().mockResolvedValueOnce(new Response(JSON.stringify({ content: [{ id: 1 }], page: { totalPages: 2 } })))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ content: [{ id: 101 }], page: { totalPages: 2 } })));
+  vi.stubGlobal('fetch', fetchMock);
+  expect(await references('authors', new AbortController().signal)).toEqual([{ id: 1 }, { id: 101 }]);
+  expect(fetchMock.mock.calls[1][0]).toBe('/api/authors?page=1&size=100');
+});
