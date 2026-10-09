@@ -1,8 +1,8 @@
 package com.lucashenrique.library;
-import com.lucashenrique.library.dto.CategoryRequest;
-import com.lucashenrique.library.entity.Category;
-import com.lucashenrique.library.repository.CategoryRepository;
-import com.lucashenrique.library.service.CategoryService;
+import com.lucashenrique.library.catalog.dto.CategoryRequest;
+import com.lucashenrique.library.catalog.entity.Category;
+import com.lucashenrique.library.catalog.repository.CategoryRepository;
+import com.lucashenrique.library.catalog.service.CategoryService;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

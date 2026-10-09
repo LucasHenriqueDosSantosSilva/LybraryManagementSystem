@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doAnswer;
 
-import com.lucashenrique.library.repository.DashboardRepository;
-import com.lucashenrique.library.service.DashboardService;
+import com.lucashenrique.library.reporting.repository.DashboardRepository;
+import com.lucashenrique.library.reporting.service.DashboardService;
 import java.sql.Connection;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;

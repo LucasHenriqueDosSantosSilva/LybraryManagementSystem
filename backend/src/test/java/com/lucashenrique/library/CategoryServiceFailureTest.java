@@ -1,8 +1,8 @@
 package com.lucashenrique.library;
 
 import com.lucashenrique.library.exception.ResourceNotFoundException;
-import com.lucashenrique.library.repository.CategoryRepository;
-import com.lucashenrique.library.service.CategoryService;
+import com.lucashenrique.library.catalog.repository.CategoryRepository;
+import com.lucashenrique.library.catalog.service.CategoryService;
 import org.junit.jupiter.api.Test;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;

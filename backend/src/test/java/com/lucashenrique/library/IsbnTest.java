@@ -1,5 +1,5 @@
 package com.lucashenrique.library;
-import com.lucashenrique.library.service.Isbn;
+import com.lucashenrique.library.catalog.domain.Isbn;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 class IsbnTest {

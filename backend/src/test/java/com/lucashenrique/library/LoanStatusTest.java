@@ -1,6 +1,6 @@
 package com.lucashenrique.library;
 
-import com.lucashenrique.library.domain.LoanStatus;
+import com.lucashenrique.library.loans.domain.LoanStatus;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
