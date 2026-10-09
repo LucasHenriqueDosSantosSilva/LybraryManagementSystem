@@ -37,7 +37,7 @@ Para testes de integração, configure **DB_URL para um schema MySQL de testes s
 ./mvnw package
 ```
 
-A suíte contém 10 testes unitários (2 com Mockito, 3 de ISBN e 5 de status), 3 testes de tradução HTTP com MockMvc standalone e 41 testes de integração Spring Boot/MockMvc contra MySQL. Usa transações com rollback para dados de teste, mas Flyway cria schema e histórico de migrations; nunca apontar os testes para um banco de produção. Testes de categoria usam rollback; testes de catálogo confirmam operações e limpam apenas seus registros. Use um schema de testes dedicado sem dados preexistentes. Os testes ainda não demonstram TDD: foram escritos neste incremento, sem histórico RED/GREEN registrado.
+A suíte contém 10 testes unitários (2 com Mockito, 3 de ISBN e 5 de status), 3 testes de tradução HTTP com MockMvc standalone e 43 testes de integração Spring Boot/MockMvc contra MySQL. Usa transações com rollback para dados de teste, mas Flyway cria schema e histórico de migrations; nunca apontar os testes para um banco de produção. Testes de categoria usam rollback; testes de catálogo confirmam operações e limpam apenas seus registros. Use um schema de testes dedicado sem dados preexistentes. Os testes ainda não demonstram TDD: foram escritos neste incremento, sem histórico RED/GREEN registrado.
 
 ## Ambiente de nuvem atual
 
@@ -135,3 +135,5 @@ Os oito arquivos de service/ foram formatados com imports explícitos, mantendo 
 [Carregamento de autores em lote](../docs/after-refactoring/step-4-book-queries.md) registra implementação, testes e comparação das consultas. Não foram medidas latência ou throughput.
 
 A [listagem de exemplares](../docs/after-refactoring/step-5-copy-queries.md) agora consulta empréstimos ativos da página em lote, preservando disponibilidade derivada. No experimento com três exemplares em circulação, a contagem mudou de 3/4/5 para 3/3/3 SELECTs nas páginas de 1/2/3 itens.
+
+DashboardService coordena data e transação; DashboardRepository executa as consultas no contexto existente, exigido por Propagation.MANDATORY. Veja [separação do dashboard](../docs/after-refactoring/step-6-dashboard-repository.md). As oito consultas e o snapshot de leitura foram preservados.
