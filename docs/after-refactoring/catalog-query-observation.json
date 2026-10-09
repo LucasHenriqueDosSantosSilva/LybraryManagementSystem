@@ -1,0 +1,36 @@
+{
+  "revision": "1616cfb8f970d13feb4a92eca51ec1906736fe28",
+  "method": "count org.hibernate.SQL SELECT log events around one HTTP request; isolated process, fresh persistence context per request",
+  "samples": [
+    {
+      "page_size": 1,
+      "returned_books": 1,
+      "select_events": 3,
+      "statements": [
+        "SELECT b.* FROM books b",
+        "SELECT COUNT(*) FROM books b",
+        "select distinct b1_0.id,a1_0.book_id,a1_1.id,a1_1.name,b1_0.category_id,b1_0.description,b1_0.isbn,b1_0.publication_year,b1_0.title from books b1_0 left join book_authors a1_0 on b1_0.id=a1_0.book_id left join authors a1_1 on a1_1.id=a1_0.author_id where b1_0.id in (?)"
+      ]
+    },
+    {
+      "page_size": 2,
+      "returned_books": 2,
+      "select_events": 3,
+      "statements": [
+        "SELECT b.* FROM books b",
+        "SELECT COUNT(*) FROM books b",
+        "select distinct b1_0.id,a1_0.book_id,a1_1.id,a1_1.name,b1_0.category_id,b1_0.description,b1_0.isbn,b1_0.publication_year,b1_0.title from books b1_0 left join book_authors a1_0 on b1_0.id=a1_0.book_id left join authors a1_1 on a1_1.id=a1_0.author_id where b1_0.id in (?,?)"
+      ]
+    },
+    {
+      "page_size": 3,
+      "returned_books": 3,
+      "select_events": 3,
+      "statements": [
+        "SELECT b.* FROM books b",
+        "SELECT COUNT(*) FROM books b",
+        "select distinct b1_0.id,a1_0.book_id,a1_1.id,a1_1.name,b1_0.category_id,b1_0.description,b1_0.isbn,b1_0.publication_year,b1_0.title from books b1_0 left join book_authors a1_0 on b1_0.id=a1_0.book_id left join authors a1_1 on a1_1.id=a1_0.author_id where b1_0.id in (?,?,?)"
+      ]
+    }
+  ]
+}
