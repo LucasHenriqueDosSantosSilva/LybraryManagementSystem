@@ -83,9 +83,12 @@ class LoanIntegrationTest {
  }
  @Test void overdueStartsAfterDueDateAndStopsAfterReturn() throws Exception {
   long id=loan();clock.date("2026-10-22");mvc.perform(get("/api/loans/"+id)).andExpect(jsonPath("$.status").value("ACTIVE"));
+  mvc.perform(get("/api/dashboard")).andExpect(jsonPath("$.overdueLoans").value(0)).andExpect(jsonPath("$.recentLoans[0].status").value("ACTIVE"));
   clock.date("2026-10-23");mvc.perform(get("/api/loans?status=OVERDUE")).andExpect(jsonPath("$.page.totalElements").value(1));
+  mvc.perform(get("/api/dashboard")).andExpect(jsonPath("$.overdueLoans").value(1)).andExpect(jsonPath("$.recentLoans[0].status").value("OVERDUE"));
   mvc.perform(post("/api/loans/"+id+"/return")).andExpect(status().isOk());
   mvc.perform(get("/api/loans?status=OVERDUE")).andExpect(jsonPath("$.page.totalElements").value(0));
+  mvc.perform(get("/api/dashboard")).andExpect(jsonPath("$.overdueLoans").value(0)).andExpect(jsonPath("$.recentLoans[0].status").value("RETURNED"));
  }
  List<Integer> race(Callable<Integer> first,Callable<Integer> second) throws Exception {
   ExecutorService pool=Executors.newFixedThreadPool(2);CountDownLatch ready=new CountDownLatch(2),start=new CountDownLatch(1);

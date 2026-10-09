@@ -1,4 +1,5 @@
 package com.lucashenrique.library.service;
+import com.lucashenrique.library.domain.LoanStatus;
 import com.lucashenrique.library.dto.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class DashboardService {
    (rs,row)->new DashboardResponse.PopularBook(rs.getLong("id"),rs.getString("title"),rs.getLong("loan_count")),limit);
   var recent=jdbc.query("SELECT l.*,c.book_id FROM loans l JOIN book_copies c ON c.id=l.copy_id ORDER BY l.loan_date DESC,l.id DESC LIMIT ?",(rs,row)->{
    LocalDate returned=rs.getObject("returned_date",LocalDate.class),due=rs.getObject("due_date",LocalDate.class);
-   return new LoanResponse(rs.getLong("id"),rs.getLong("reader_id"),rs.getLong("copy_id"),rs.getLong("book_id"),rs.getObject("loan_date",LocalDate.class),due,returned,returned!=null?"RETURNED":due.isBefore(today)?"OVERDUE":"ACTIVE");
+   return new LoanResponse(rs.getLong("id"),rs.getLong("reader_id"),rs.getLong("copy_id"),rs.getLong("book_id"),rs.getObject("loan_date",LocalDate.class),due,returned,LoanStatus.classify(due,returned,today).name());
   },limit);
   return new DashboardResponse(books,copies,readers,available,active,overdue,popular,recent);
  }

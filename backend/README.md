@@ -37,7 +37,7 @@ Para testes de integração, configure **DB_URL para um schema MySQL de testes s
 ./mvnw package
 ```
 
-A suíte contém 5 testes unitários (2 com Mockito e 3 de ISBN), 3 testes de tradução HTTP com MockMvc standalone e 39 testes de integração Spring Boot/MockMvc contra MySQL. Usa transações com rollback para dados de teste, mas Flyway cria schema e histórico de migrations; nunca apontar os testes para um banco de produção. Testes de categoria usam rollback; testes de catálogo confirmam operações e limpam apenas seus registros. Use um schema de testes dedicado sem dados preexistentes. Os testes ainda não demonstram TDD: foram escritos neste incremento, sem histórico RED/GREEN registrado.
+A suíte contém 10 testes unitários (2 com Mockito, 3 de ISBN e 5 de status), 3 testes de tradução HTTP com MockMvc standalone e 39 testes de integração Spring Boot/MockMvc contra MySQL. Usa transações com rollback para dados de teste, mas Flyway cria schema e histórico de migrations; nunca apontar os testes para um banco de produção. Testes de categoria usam rollback; testes de catálogo confirmam operações e limpam apenas seus registros. Use um schema de testes dedicado sem dados preexistentes. Os testes ainda não demonstram TDD: foram escritos neste incremento, sem histórico RED/GREEN registrado.
 
 ## Ambiente de nuvem atual
 
@@ -128,4 +128,4 @@ Dashboard usa consultas parametrizadas com JdbcTemplate dentro de uma transaçã
 
 ## Refatoração em andamento
 
-Services agora lançam ResourceNotFoundException, BusinessConflictException ou InvalidInputException, sem conhecer HttpStatus. ApiExceptionHandler mantém a tradução 404/409/400 e o contrato ProblemDetail. A organização por camadas e os demais problemas da baseline continuam em análise; veja [primeiro incremento de refatoração](../docs/after-refactoring/step-1-errors.md).
+Services agora lançam ResourceNotFoundException, BusinessConflictException ou InvalidInputException, sem conhecer HttpStatus. ApiExceptionHandler mantém a tradução 404/409/400 e o contrato ProblemDetail. LoanStatus.classify centraliza a classificação Java em circulação e dashboard, preservando as strings públicas. Filtros/contagens equivalentes seguem no SQL e são verificados por integração. A organização por camadas e os demais problemas da baseline continuam em análise; veja [primeiro incremento de refatoração](../docs/after-refactoring/step-1-errors.md).

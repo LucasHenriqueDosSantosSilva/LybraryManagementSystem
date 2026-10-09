@@ -1,4 +1,5 @@
 package com.lucashenrique.library.service;
+import com.lucashenrique.library.domain.LoanStatus;
 import com.lucashenrique.library.exception.InvalidInputException;
 import com.lucashenrique.library.exception.BusinessConflictException;
 import com.lucashenrique.library.exception.ResourceNotFoundException;
@@ -45,7 +46,7 @@ public class LoanService {
   return loans.search(readerId,status,today,PageRequest.of(page,size,Sort.by(Sort.Direction.DESC,"loanDate","id"))).map(l->response(l,today));
  }
  private LoanResponse response(Loan l,LocalDate today){
-  String status=l.getReturnedDate()!=null?"RETURNED":l.getDueDate().isBefore(today)?"OVERDUE":"ACTIVE";
+  String status=LoanStatus.classify(l.getDueDate(),l.getReturnedDate(),today).name();
   return new LoanResponse(l.getId(),l.getReader().getId(),l.getCopy().getId(),l.getCopy().getBook().getId(),l.getLoanDate(),l.getDueDate(),l.getReturnedDate(),status);
  }
  private ResourceNotFoundException missing(String name){return new ResourceNotFoundException(name+" não encontrado.");}
