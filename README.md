@@ -4,7 +4,7 @@ Projeto acadêmico para as disciplinas de Projeto de Banco de Dados e Análise e
 
 ## Estado atual
 
-Etapas 1–7: análise, escopo, casos de uso, modelagem, normalização, arquitetura e estrutura do repositório. **Etapa 8 — baseline do backend concluída; etapa 9 — análise registrada; etapa 10 — refatoração iniciada:** backend executável com CRUD de categorias, autores, livros, leitores e exemplares, empréstimos e devoluções, busca do catálogo e dashboard, migrations MySQL e 56 testes passando. Frontend e autenticação pública ainda não estão implementados.
+Etapas 1–7: análise, escopo, casos de uso, modelagem, normalização, arquitetura e estrutura do repositório. **Etapa 8 — baseline do backend concluída; etapa 9 — análise registrada; etapa 10 — refatoração iniciada:** backend executável com CRUD de categorias, autores, livros, leitores e exemplares, empréstimos e devoluções, busca do catálogo e dashboard, migrations MySQL e 62 testes passando. Frontend e autenticação pública ainda não estão implementados.
 
 Leia a [análise inicial](docs/requirements/initial-analysis.md), que registra escopo, requisitos, regras, arquitetura, tecnologias e plano de evolução.
 
@@ -28,7 +28,7 @@ Implementados: Java 21, Spring Boot, Maven Wrapper, MySQL, Flyway, JPA, Bean Val
 
 ## Desenvolvimento
 
-A análise inicial foi aprovada para continuidade. A baseline do backend está em desenvolvimento incremental. A [análise dos problemas da baseline](docs/before-refactoring/analysis.md) registra evidências e propostas. A [primeira refatoração](docs/after-refactoring/step-1-errors.md) separa exceções de aplicação de HTTP. A [segunda refatoração](docs/after-refactoring/step-2-loan-status.md) centraliza a classificação dos empréstimos. A [terceira refatoração](docs/after-refactoring/step-3-readability.md) melhora a legibilidade dos services. A [quarta refatoração](docs/after-refactoring/step-4-book-queries.md) carrega autores em lote, mantendo a paginação. A [quinta refatoração](docs/after-refactoring/step-5-copy-queries.md) consulta ocupações de exemplares em lote. A [sexta refatoração](docs/after-refactoring/step-6-dashboard-repository.md) separa SQL do dashboard de sua coordenação. A próxima mudança centraliza a validação de paginação. Não há demonstração publicada nem licença definida nesta etapa.
+A análise inicial foi aprovada para continuidade. A baseline do backend está em desenvolvimento incremental. A [análise dos problemas da baseline](docs/before-refactoring/analysis.md) registra evidências e propostas. A [primeira refatoração](docs/after-refactoring/step-1-errors.md) separa exceções de aplicação de HTTP. A [segunda refatoração](docs/after-refactoring/step-2-loan-status.md) centraliza a classificação dos empréstimos. A [terceira refatoração](docs/after-refactoring/step-3-readability.md) melhora a legibilidade dos services. A [quarta refatoração](docs/after-refactoring/step-4-book-queries.md) carrega autores em lote, mantendo a paginação. A [quinta refatoração](docs/after-refactoring/step-5-copy-queries.md) consulta ocupações de exemplares em lote. A [sexta refatoração](docs/after-refactoring/step-6-dashboard-repository.md) separa SQL do dashboard de sua coordenação. A [sétima refatoração](docs/after-refactoring/step-7-pagination.md) centraliza o contrato de paginação. A próxima mudança organiza o código por domínio. Não há demonstração publicada nem licença definida nesta etapa.
 
 ## Git
 
