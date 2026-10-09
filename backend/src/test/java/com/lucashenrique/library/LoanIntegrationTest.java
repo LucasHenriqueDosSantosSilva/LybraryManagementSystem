@@ -182,4 +182,20 @@ class LoanIntegrationTest {
   mvc.perform(get("/api/books").param("title","%_")).andExpect(status().isOk()).andExpect(jsonPath("$.page.totalElements").value(1));
   mvc.perform(get("/api/books").param("title","No%")).andExpect(jsonPath("$.page.totalElements").value(0));
  }
+
+ @Test void copyPagesPreserveMixedAvailabilityAndReflectReturn() throws Exception {
+  long free=create("copies",Map.of("inventoryCode","FREE-"+UUID.randomUUID().toString().substring(0,12),"bookId",book));
+  long withdrawn=create("copies",Map.of("inventoryCode","OUT-"+UUID.randomUUID().toString().substring(0,12),"bookId",book));
+  try {
+   long id=loan();mvc.perform(post("/api/copies/"+withdrawn+"/withdrawal")).andExpect(status().isOk());
+   mvc.perform(get("/api/copies?size=2")).andExpect(status().isOk()).andExpect(jsonPath("$.page.totalElements").value(3))
+    .andExpect(jsonPath("$.content[0].id").value(copy)).andExpect(jsonPath("$.content[0].available").value(false))
+    .andExpect(jsonPath("$.content[1].id").value(free)).andExpect(jsonPath("$.content[1].available").value(true));
+   mvc.perform(get("/api/copies?size=2&page=1")).andExpect(jsonPath("$.content[0].id").value(withdrawn))
+    .andExpect(jsonPath("$.content[0].available").value(false)).andExpect(jsonPath("$.content[0].circulationStatus").value("WITHDRAWN"));
+   mvc.perform(post("/api/loans/"+id+"/return")).andExpect(status().isOk());
+   mvc.perform(get("/api/copies?size=2")).andExpect(jsonPath("$.content[0].available").value(true));
+   mvc.perform(get("/api/copies/"+copy)).andExpect(jsonPath("$.available").value(true));
+  }finally{jdbc.update("DELETE FROM book_copies WHERE id IN (?,?)",free,withdrawn);}
+ }
 }

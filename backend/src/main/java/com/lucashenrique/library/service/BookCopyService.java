@@ -9,6 +9,7 @@ import com.lucashenrique.library.repository.BookCopyRepository;
 import com.lucashenrique.library.repository.BookRepository;
 import com.lucashenrique.library.repository.LoanRepository;
 import java.util.Locale;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -64,7 +65,18 @@ public class BookCopyService {
 
   @Transactional(readOnly = true)
   public Page<CopyResponse> list(int page, int size) {
-    return copies.findAll(PageRequest.of(page, size, Sort.by("id"))).map(this::response);
+    Page<BookCopy> result = copies.findAll(PageRequest.of(page, size, Sort.by("id")));
+    Set<Long> occupied =
+        result.isEmpty()
+            ? Set.of()
+            : Set.copyOf(
+                loans.activeCopyIds(result.getContent().stream().map(BookCopy::getId).toList()));
+    return result.map(
+        copy ->
+            response(
+                copy,
+                "IN_CIRCULATION".equals(copy.getCirculationStatus())
+                    && !occupied.contains(copy.getId())));
   }
 
   public void delete(Long id) {
@@ -93,12 +105,18 @@ public class BookCopyService {
   }
 
   private CopyResponse response(BookCopy copy) {
+    boolean available =
+        "IN_CIRCULATION".equals(copy.getCirculationStatus())
+            && !loans.existsByCopyIdAndReturnedDateIsNull(copy.getId());
+    return response(copy, available);
+  }
+
+  private CopyResponse response(BookCopy copy, boolean available) {
     return new CopyResponse(
         copy.getId(),
         copy.getInventoryCode(),
         copy.getBook().getId(),
         copy.getCirculationStatus(),
-        "IN_CIRCULATION".equals(copy.getCirculationStatus())
-            && !loans.existsByCopyIdAndReturnedDateIsNull(copy.getId()));
+        available);
   }
 }
