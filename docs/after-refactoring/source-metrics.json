@@ -1,0 +1,387 @@
+{
+  "revision": "4444c97330a6594f157e602393e7c3af4439fe84",
+  "method": "physical source lines from git show; whitespace-only lines excluded for nonblank count",
+  "groups": {
+    "production": {
+      "java_files": 50,
+      "physical_lines": 1842,
+      "nonblank_lines": 1575,
+      "files": [
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/LibraryApplication.java",
+          "physical_lines": 15,
+          "nonblank_lines": 13,
+          "longest_line_characters": 92
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/api/ApiExceptionHandler.java",
+          "physical_lines": 125,
+          "nonblank_lines": 117,
+          "longest_line_characters": 97
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/api/PageParameters.java",
+          "physical_lines": 16,
+          "nonblank_lines": 13,
+          "longest_line_characters": 65
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/controller/AuthorController.java",
+          "physical_lines": 51,
+          "nonblank_lines": 43,
+          "longest_line_characters": 98
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/controller/BookController.java",
+          "physical_lines": 55,
+          "nonblank_lines": 47,
+          "longest_line_characters": 95
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/controller/BookCopyController.java",
+          "physical_lines": 56,
+          "nonblank_lines": 47,
+          "longest_line_characters": 94
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/controller/CategoryController.java",
+          "physical_lines": 52,
+          "nonblank_lines": 44,
+          "longest_line_characters": 97
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/domain/Isbn.java",
+          "physical_lines": 31,
+          "nonblank_lines": 28,
+          "longest_line_characters": 100
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/dto/AuthorRequest.java",
+          "physical_lines": 9,
+          "nonblank_lines": 7,
+          "longest_line_characters": 67
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/dto/AuthorResponse.java",
+          "physical_lines": 3,
+          "nonblank_lines": 2,
+          "longest_line_characters": 53
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/dto/BookRequest.java",
+          "physical_lines": 12,
+          "nonblank_lines": 10,
+          "longest_line_characters": 56
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/dto/BookResponse.java",
+          "physical_lines": 12,
+          "nonblank_lines": 10,
+          "longest_line_characters": 46
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/dto/CategoryRequest.java",
+          "physical_lines": 9,
+          "nonblank_lines": 7,
+          "longest_line_characters": 67
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/dto/CategoryResponse.java",
+          "physical_lines": 3,
+          "nonblank_lines": 2,
+          "longest_line_characters": 55
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/dto/CopyRequest.java",
+          "physical_lines": 12,
+          "nonblank_lines": 10,
+          "longest_line_characters": 79
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/dto/CopyResponse.java",
+          "physical_lines": 4,
+          "nonblank_lines": 3,
+          "longest_line_characters": 95
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/entity/Author.java",
+          "physical_lines": 32,
+          "nonblank_lines": 24,
+          "longest_line_characters": 53
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/entity/Book.java",
+          "physical_lines": 80,
+          "nonblank_lines": 64,
+          "longest_line_characters": 71
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/entity/BookCopy.java",
+          "physical_lines": 52,
+          "nonblank_lines": 39,
+          "longest_line_characters": 54
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/entity/Category.java",
+          "physical_lines": 32,
+          "nonblank_lines": 24,
+          "longest_line_characters": 53
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/repository/AuthorRepository.java",
+          "physical_lines": 6,
+          "nonblank_lines": 4,
+          "longest_line_characters": 72
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/repository/BookCopyRepository.java",
+          "physical_lines": 16,
+          "nonblank_lines": 13,
+          "longest_line_characters": 99
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/repository/BookRepository.java",
+          "physical_lines": 41,
+          "nonblank_lines": 37,
+          "longest_line_characters": 159
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/repository/CategoryRepository.java",
+          "physical_lines": 6,
+          "nonblank_lines": 4,
+          "longest_line_characters": 76
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/service/AuthorService.java",
+          "physical_lines": 62,
+          "nonblank_lines": 54,
+          "longest_line_characters": 87
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/service/BookCopyService.java",
+          "physical_lines": 122,
+          "nonblank_lines": 109,
+          "longest_line_characters": 99
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/service/BookService.java",
+          "physical_lines": 147,
+          "nonblank_lines": 136,
+          "longest_line_characters": 99
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/catalog/service/CategoryService.java",
+          "physical_lines": 62,
+          "nonblank_lines": 54,
+          "longest_line_characters": 91
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/configuration/TimeConfiguration.java",
+          "physical_lines": 13,
+          "nonblank_lines": 11,
+          "longest_line_characters": 91
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/exception/BusinessConflictException.java",
+          "physical_lines": 7,
+          "nonblank_lines": 6,
+          "longest_line_characters": 65
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/exception/InvalidInputException.java",
+          "physical_lines": 7,
+          "nonblank_lines": 6,
+          "longest_line_characters": 61
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/exception/ResourceNotFoundException.java",
+          "physical_lines": 7,
+          "nonblank_lines": 6,
+          "longest_line_characters": 65
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/loans/controller/LoanController.java",
+          "physical_lines": 47,
+          "nonblank_lines": 40,
+          "longest_line_characters": 88
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/loans/domain/LoanStatus.java",
+          "physical_lines": 21,
+          "nonblank_lines": 18,
+          "longest_line_characters": 83
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/loans/dto/LoanRequest.java",
+          "physical_lines": 5,
+          "nonblank_lines": 3,
+          "longest_line_characters": 94
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/loans/dto/LoanResponse.java",
+          "physical_lines": 13,
+          "nonblank_lines": 11,
+          "longest_line_characters": 44
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/loans/entity/Loan.java",
+          "physical_lines": 67,
+          "nonblank_lines": 51,
+          "longest_line_characters": 76
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/loans/repository/LoanRepository.java",
+          "physical_lines": 40,
+          "nonblank_lines": 31,
+          "longest_line_characters": 100
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/loans/service/LoanService.java",
+          "physical_lines": 121,
+          "nonblank_lines": 111,
+          "longest_line_characters": 94
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/readers/controller/ReaderController.java",
+          "physical_lines": 58,
+          "nonblank_lines": 49,
+          "longest_line_characters": 98
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/readers/dto/ReaderRequest.java",
+          "physical_lines": 13,
+          "nonblank_lines": 11,
+          "longest_line_characters": 79
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/readers/dto/ReaderResponse.java",
+          "physical_lines": 4,
+          "nonblank_lines": 3,
+          "longest_line_characters": 85
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/readers/dto/ReaderStatusRequest.java",
+          "physical_lines": 5,
+          "nonblank_lines": 3,
+          "longest_line_characters": 61
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/readers/entity/Reader.java",
+          "physical_lines": 53,
+          "nonblank_lines": 40,
+          "longest_line_characters": 80
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/readers/repository/ReaderRepository.java",
+          "physical_lines": 10,
+          "nonblank_lines": 8,
+          "longest_line_characters": 100
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/readers/service/ReaderService.java",
+          "physical_lines": 94,
+          "nonblank_lines": 82,
+          "longest_line_characters": 90
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/reporting/controller/DashboardController.java",
+          "physical_lines": 24,
+          "nonblank_lines": 20,
+          "longest_line_characters": 94
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/reporting/dto/DashboardResponse.java",
+          "physical_lines": 16,
+          "nonblank_lines": 14,
+          "longest_line_characters": 73
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/reporting/repository/DashboardRepository.java",
+          "physical_lines": 68,
+          "nonblank_lines": 64,
+          "longest_line_characters": 100
+        },
+        {
+          "path": "backend/src/main/java/com/lucashenrique/library/reporting/service/DashboardService.java",
+          "physical_lines": 26,
+          "nonblank_lines": 22,
+          "longest_line_characters": 74
+        }
+      ]
+    },
+    "tests": {
+      "java_files": 11,
+      "physical_lines": 662,
+      "nonblank_lines": 640,
+      "files": [
+        {
+          "path": "backend/src/test/java/com/lucashenrique/library/CatalogIntegrationTest.java",
+          "physical_lines": 111,
+          "nonblank_lines": 110,
+          "longest_line_characters": 173
+        },
+        {
+          "path": "backend/src/test/java/com/lucashenrique/library/CategoryIntegrationTest.java",
+          "physical_lines": 43,
+          "nonblank_lines": 43,
+          "longest_line_characters": 132
+        },
+        {
+          "path": "backend/src/test/java/com/lucashenrique/library/CategoryServiceFailureTest.java",
+          "physical_lines": 19,
+          "nonblank_lines": 17,
+          "longest_line_characters": 118
+        },
+        {
+          "path": "backend/src/test/java/com/lucashenrique/library/CategoryServiceTest.java",
+          "physical_lines": 17,
+          "nonblank_lines": 17,
+          "longest_line_characters": 111
+        },
+        {
+          "path": "backend/src/test/java/com/lucashenrique/library/DashboardTransactionTest.java",
+          "physical_lines": 47,
+          "nonblank_lines": 42,
+          "longest_line_characters": 91
+        },
+        {
+          "path": "backend/src/test/java/com/lucashenrique/library/IsbnTest.java",
+          "physical_lines": 16,
+          "nonblank_lines": 16,
+          "longest_line_characters": 97
+        },
+        {
+          "path": "backend/src/test/java/com/lucashenrique/library/LoanIntegrationTest.java",
+          "physical_lines": 201,
+          "nonblank_lines": 199,
+          "longest_line_characters": 243
+        },
+        {
+          "path": "backend/src/test/java/com/lucashenrique/library/LoanStatusTest.java",
+          "physical_lines": 26,
+          "nonblank_lines": 23,
+          "longest_line_characters": 115
+        },
+        {
+          "path": "backend/src/test/java/com/lucashenrique/library/PaginationContractTest.java",
+          "physical_lines": 41,
+          "nonblank_lines": 37,
+          "longest_line_characters": 92
+        },
+        {
+          "path": "backend/src/test/java/com/lucashenrique/library/ReaderAndCopyIntegrationTest.java",
+          "physical_lines": 99,
+          "nonblank_lines": 99,
+          "longest_line_characters": 218
+        },
+        {
+          "path": "backend/src/test/java/com/lucashenrique/library/api/ApiExceptionHandlerTest.java",
+          "physical_lines": 42,
+          "nonblank_lines": 37,
+          "longest_line_characters": 125
+        }
+      ]
+    }
+  },
+  "services_importing_http": []
+}

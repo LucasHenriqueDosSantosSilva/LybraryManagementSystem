@@ -55,7 +55,7 @@ O helper é específico desta máquina e não substitui os pré-requisitos de ou
 
 ## Organização didática
 
-Pacotes globais `controller`, `service`, `repository`, `entity` e `dto` deixam a funcionalidade dispersa. `CategoryService` repete busca e mapeamento nas operações. Na tag da baseline também dependia de HTTP por `ResponseStatusException`; essa dependência foi removida no primeiro incremento de refatoração. São candidatos plausíveis para análise posterior, não justificativa para refatorar antes de completar a baseline. Integridade, validação e testes são preservados desde o início.
+Na baseline, pacotes globais `controller`, `service`, `repository`, `entity` e `dto` deixavam a funcionalidade dispersa. `CategoryService` repete busca e mapeamento nas operações. Na tag da baseline também dependia de HTTP por `ResponseStatusException`; essa dependência foi removida no primeiro incremento de refatoração. São candidatos plausíveis para análise posterior, não justificativa para refatorar antes de completar a baseline. Integridade, validação e testes são preservados desde o início.
 
 ## Autores e livros
 
@@ -126,11 +126,11 @@ GET `/api/dashboard?limit=5` retorna totalBooks (edições), totalCopies (inclui
 
 Dashboard usa consultas parametrizadas com JdbcTemplate dentro de uma transação REPEATABLE_READ: todas as consultas leem o mesmo snapshot InnoDB e usam uma única data de referência. Não há garantia de atualização em tempo real. Ranking conta eventos ativos e devolvidos, sem juntar autores para multiplicar resultados. Nenhuma migration adicional foi necessária neste incremento.
 
-## Refatoração em andamento
+## Refatoração concluída
 
-Services agora lançam ResourceNotFoundException, BusinessConflictException ou InvalidInputException, sem conhecer HttpStatus. ApiExceptionHandler mantém a tradução 404/409/400 e o contrato ProblemDetail. LoanStatus.classify centraliza a classificação Java em circulação e dashboard, preservando as strings públicas. Filtros/contagens equivalentes seguem no SQL e são verificados por integração. A organização por camadas e os demais problemas da baseline continuam em análise; veja [primeiro incremento de refatoração](../docs/after-refactoring/step-1-errors.md).
+Services agora lançam ResourceNotFoundException, BusinessConflictException ou InvalidInputException, sem conhecer HttpStatus. ApiExceptionHandler mantém a tradução 404/409/400 e o contrato ProblemDetail. LoanStatus.classify centraliza a classificação Java em circulação e dashboard, preservando as strings públicas. Filtros/contagens equivalentes seguem no SQL e são verificados por integração. Os oito problemas selecionados receberam incrementos documentados; veja [primeiro incremento de refatoração](../docs/after-refactoring/step-1-errors.md).
 
-Os oito arquivos de service/ foram formatados com imports explícitos, mantendo regras, bloqueios e SQL. Veja [legibilidade dos serviços](../docs/after-refactoring/step-3-readability.md). Outros pacotes ainda não foram padronizados.
+Os oito arquivos de service/ foram formatados com imports explícitos, mantendo regras, bloqueios e SQL. Veja [legibilidade dos serviços](../docs/after-refactoring/step-3-readability.md). O oitavo incremento também padronizou a formatação dos demais arquivos Java de produção.
 
 [Carregamento de autores em lote](../docs/after-refactoring/step-4-book-queries.md) registra implementação, testes e comparação das consultas. Não foram medidas latência ou throughput.
 
@@ -139,3 +139,5 @@ A [listagem de exemplares](../docs/after-refactoring/step-5-copy-queries.md) ago
 DashboardService coordena data e transação; DashboardRepository executa as consultas no contexto existente, exigido por Propagation.MANDATORY. Veja [separação do dashboard](../docs/after-refactoring/step-6-dashboard-repository.md). As oito consultas e o snapshot de leitura foram preservados.
 
 PageParameters centraliza defaults e validação de page/size dos seis endpoints de listagem. As rotas e respostas não mudaram; veja [contrato de paginação](../docs/after-refactoring/step-7-pagination.md). O dashboard mantém seu limit separado.
+
+Os pacotes `catalog`, `readers`, `loans` e `reporting` agrupam as camadas por domínio. Infraestrutura compartilhada permanece em `api`, `exception` e `configuration`. São agrupamentos lógicos com dependências existentes preservadas; veja [organização por domínio e comparação](../docs/after-refactoring/step-8-domain-organization.md).
