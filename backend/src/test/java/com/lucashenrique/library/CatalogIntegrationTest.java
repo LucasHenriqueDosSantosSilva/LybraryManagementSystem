@@ -90,4 +90,22 @@ class CatalogIntegrationTest {
   input.put("categoryId",category);input.put("publicationYear",0);
   mvc.perform(post("/api/books").contentType("application/json").content(json.writeValueAsString(input))).andExpect(status().isBadRequest());
  }
+
+ @Test void paginationKeepsOrderTotalsAndAllAuthors() throws Exception {
+  long first=createBook();
+  long extra=create("authors",Map.of("name","Outro autor"));createdAuthors.add(extra);
+  jdbc.update("INSERT INTO book_authors(book_id,author_id) VALUES(?,?)",first,extra);
+  long second=create("books",book("9780804429573",List.of(author)));createdBooks.add(second);
+  long third=create("books",book("9780134685991",List.of(author)));createdBooks.add(third);
+  mvc.perform(get("/api/books").param("categoryId",Long.toString(category)).param("size","2"))
+   .andExpect(status().isOk()).andExpect(jsonPath("$.page.totalElements").value(3))
+   .andExpect(jsonPath("$.page.totalPages").value(2)).andExpect(jsonPath("$.content.length()").value(2))
+   .andExpect(jsonPath("$.content[0].id").value(first)).andExpect(jsonPath("$.content[1].id").value(second))
+   .andExpect(jsonPath("$.content[0].authors.length()").value(2));
+  mvc.perform(get("/api/books").param("categoryId",Long.toString(category)).param("size","2").param("page","1"))
+   .andExpect(jsonPath("$.page.totalElements").value(3)).andExpect(jsonPath("$.content.length()").value(1))
+   .andExpect(jsonPath("$.content[0].id").value(third));
+  mvc.perform(get("/api/books").param("categoryId",Long.toString(category)).param("author","Outro"))
+   .andExpect(jsonPath("$.page.totalElements").value(1)).andExpect(jsonPath("$.content[0].authors.length()").value(2));
+ }
 }

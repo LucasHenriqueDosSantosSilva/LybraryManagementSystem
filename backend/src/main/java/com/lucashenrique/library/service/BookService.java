@@ -84,9 +84,14 @@ public class BookService {
       } catch (IllegalArgumentException ex) {
         throw new InvalidInputException(ex.getMessage());
       }
-    return books
-        .search(filter(title), canonical, categoryId, filter(author), PageRequest.of(page, size))
-        .map(this::response);
+    Page<Book> result =
+        books.search(
+            filter(title), canonical, categoryId, filter(author), PageRequest.of(page, size));
+    if (!result.isEmpty()) {
+      // Fetch only this page; the persistence context initializes these same Book instances.
+      books.fetchAuthors(result.getContent().stream().map(Book::getId).toList());
+    }
+    return result.map(this::response);
   }
 
   private String filter(String value) {
