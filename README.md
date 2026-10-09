@@ -28,7 +28,7 @@ Implementados: Java 21, Spring Boot, Maven Wrapper, MySQL, Flyway, JPA, Bean Val
 
 ## Desenvolvimento
 
-A análise inicial foi aprovada para continuidade. A baseline do backend está em desenvolvimento incremental. A [análise dos problemas da baseline](docs/before-refactoring/analysis.md) registra evidências e propostas. A [primeira refatoração](docs/after-refactoring/step-1-errors.md) separa exceções de aplicação de HTTP. A [segunda refatoração](docs/after-refactoring/step-2-loan-status.md) centraliza a classificação dos empréstimos. As próximas mudanças preservam contratos e integridade. Não há demonstração publicada nem licença definida nesta etapa.
+A análise inicial foi aprovada para continuidade. A baseline do backend está em desenvolvimento incremental. A [análise dos problemas da baseline](docs/before-refactoring/analysis.md) registra evidências e propostas. A [primeira refatoração](docs/after-refactoring/step-1-errors.md) separa exceções de aplicação de HTTP. A [segunda refatoração](docs/after-refactoring/step-2-loan-status.md) centraliza a classificação dos empréstimos. A [terceira refatoração](docs/after-refactoring/step-3-readability.md) melhora a legibilidade dos services. A próxima mudança aborda consultas adicionais da listagem de livros. Não há demonstração publicada nem licença definida nesta etapa.
 
 ## Git
 

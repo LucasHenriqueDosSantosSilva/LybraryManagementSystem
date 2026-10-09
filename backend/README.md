@@ -129,3 +129,5 @@ Dashboard usa consultas parametrizadas com JdbcTemplate dentro de uma transaçã
 ## Refatoração em andamento
 
 Services agora lançam ResourceNotFoundException, BusinessConflictException ou InvalidInputException, sem conhecer HttpStatus. ApiExceptionHandler mantém a tradução 404/409/400 e o contrato ProblemDetail. LoanStatus.classify centraliza a classificação Java em circulação e dashboard, preservando as strings públicas. Filtros/contagens equivalentes seguem no SQL e são verificados por integração. A organização por camadas e os demais problemas da baseline continuam em análise; veja [primeiro incremento de refatoração](../docs/after-refactoring/step-1-errors.md).
+
+Os oito arquivos de service/ foram formatados com imports explícitos, mantendo regras, bloqueios e SQL. Veja [legibilidade dos serviços](../docs/after-refactoring/step-3-readability.md). Outros pacotes ainda não foram padronizados.
