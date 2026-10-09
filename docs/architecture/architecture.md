@@ -1,6 +1,6 @@
 # Etapa 6 — Arquitetura e decisões de projeto
 
-Arquitetura proposta para o [MVP](../requirements/mvp-scope.md), com base nos [casos de uso](../requirements/use-cases.md) e no [modelo do banco](../database/initial-model.md). Os diagramas descrevem o projeto planejado; ainda não existem classes, endpoints ou processos executáveis. Decisões serão revisadas com evidência da implementação.
+Arquitetura proposta para o [MVP](../requirements/mvp-scope.md), com base nos [casos de uso](../requirements/use-cases.md) e no [modelo do banco](../database/initial-model.md). Este documento registra as decisões propostas na etapa 6. Classes, endpoints e processos foram implementados nas etapas seguintes; consulte os [diagramas implementados](../uml/implemented-system.md) e o [contrato REST atual](../api/rest-contract.md). As propostas abaixo não são evidência de que cada detalhe foi adotado.
 
 ## ADR01 — Monólito organizado por domínio
 
@@ -172,3 +172,9 @@ Conceitos das disciplinas: camadas, ocultamento de informação, coesão, acopla
 Perguntas para apresentação: por que monólito? Porque o fluxo cabe em uma aplicação e uma transação local. Por que DTO? Para separar contrato público da persistência. Por que não interface para tudo? Porque abstração precisa de uma variação ou fronteira justificável. Por que manter proteção na baseline? Porque refatoração acadêmica não exige comprometer dados ou segurança.
 
 Próxima etapa: estrutura inicial de desenvolvimento e convenções do repositório, criando arquivos somente quando úteis e preparando a implementação progressiva.
+
+## Atualização da etapa 16
+
+Implementados React/TypeScript/Vite, Spring Boot e MySQL/Flyway; Compose serve a SPA por Nginx e encaminha /api na mesma origem. Pacotes catalog/readers/loans/reporting têm camadas internas. Catalog e readers consultam LoanRepository para restrições de histórico/ocupação, portanto a tabela inicial de dependências não descreve isolamento estrito; veja a evidência do incremento 8.
+
+O DTO real é LoanRequest. ApiExceptionHandler traduz exceções em ProblemDetail com status/detail/instance e errors em validação de campos; não foi implementado um código de negócio adicional estável. O frontend não compara mensagens para tomar decisões. Não há configuração CORS para deploy separado: desenvolvimento usa proxy Vite e Compose usa Nginx. Clock é configurável; empréstimos usam READ_COMMITTED e dashboard snapshot REPEATABLE_READ. A enum LoanStatus calcula situação; não foi introduzido padrão State ou microsserviços.

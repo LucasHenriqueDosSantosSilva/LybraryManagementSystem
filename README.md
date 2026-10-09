@@ -1,39 +1,43 @@
 # Library Management System
 
-Projeto acadêmico para as disciplinas de Projeto de Banco de Dados e Análise e Projeto de Software. A proposta é construir um sistema de gerenciamento de biblioteca e analisar sua evolução por meio de uma versão inicial funcional, seguida de refatorações justificadas.
+Projeto acadêmico de Projeto de Banco de Dados e Análise e Projeto de Software: gestão de catálogo e circulação de uma biblioteca, com baseline preservada, refatorações justificadas e evidências de testes.
 
-## Estado atual
+## Sistema implementado
 
-Etapas 1–7: análise, escopo, casos de uso, modelagem, normalização, arquitetura e estrutura do repositório. **Etapa 8 — baseline do backend concluída; etapa 9 — análise registrada; etapa 10 — refatoração concluída:** backend executável com CRUD de categorias, autores, livros, leitores e exemplares, empréstimos e devoluções, busca do catálogo e dashboard, migrations MySQL e 79 testes passando. Frontend com dashboard, categorias, autores, livros, leitores, exemplares e circulação; autenticação pública ainda não implementada.
+Categorias, autores, livros/edições, exemplares físicos e leitores; empréstimos, devoluções, histórico, busca e dashboard. Frontend React/TypeScript/Vite, backend Java 21/Spring Boot 3.5.7 e MySQL 8.4 com Flyway. Docker Compose integra MySQL, backend e Nginx na mesma origem. A interface e a documentação são em português.
 
-Leia a [análise inicial](docs/requirements/initial-analysis.md), que registra escopo, requisitos, regras, arquitetura, tecnologias e plano de evolução.
+Etapas 1–16 concluídas para execução local. Não há demonstração pública, autenticação ou licença definida. Etapas de deploy e revisão acadêmica final permanecem pendentes.
 
-O [escopo do MVP](docs/requirements/mvp-scope.md) define os limites do produto e os critérios de aceite para as próximas etapas.
+## Executar e demonstrar
 
-Os [casos de uso](docs/requirements/use-cases.md) detalham fluxos e alternativas. O [diagrama PlantUML](docs/uml/use-cases.puml) representa o ator e os objetivos do MVP proposto; sua renderização ainda não foi validada.
+Siga [Docker Compose](docker/README.md): copie `.env.example` para `.env`, defina as duas senhas e execute `docker compose up --build -d --wait`. Apenas a porta local do frontend é publicada, por padrão 8088; MySQL e backend ficam na rede interna. As instruções distinguem builds, testes, volumes e configuração da nuvem.
 
-O [modelo inicial do banco](docs/database/initial-model.md) registra o dicionário de dados, relacionamentos, restrições e decisões de concorrência propostas para MySQL.
+Alternativas: [backend](backend/README.md) e [frontend](frontend/README.md) em desenvolvimento. O [contrato REST](docs/api/rest-contract.md) registra entradas, respostas, paginação e erros. Use o [roteiro de demonstração](docs/presentation/demo-guide.md) e os [diagramas implementados](docs/uml/implemented-system.md).
 
-A [análise de normalização](docs/database/normalization.md) apresenta chaves candidatas, dependências funcionais e justificativas de 1FN, 2FN e 3FN, distinguindo modelo lógico e mecanismos físicos.
+## Evidências de validação
 
-A [arquitetura proposta](docs/architecture/architecture.md) registra responsabilidades, módulos, contratos, transações e o plano da baseline didática.
+| Verificação | Resultado registrado |
+| --- | --- |
+| Backend | 79 testes aprovados na etapa 12; não reexecutados nas entregas apenas de frontend/Docker |
+| Frontend | 26 testes de componentes/cliente HTTP e typecheck/build aprovados |
+| Navegador | 2 cenários Chromium aprovados com API/MySQL reais, inclusive nos containers; rotas em 320 px e link de salto por teclado |
+| Containers | Builds e healthchecks aprovados; fixture preservada após recriar containers e removida ao concluir |
 
-A [estrutura de desenvolvimento](docs/development/repository-structure.md) distingue arquivos atuais e futuros. As [convenções de contribuição](CONTRIBUTING.md) registram o fluxo Git, segurança e critérios de conclusão.
+Veja [estratégia de testes](docs/testing/strategy.md), [TDD observado](docs/testing/tdd-isbn-whitespace.md) e [integração em navegador](docs/testing/browser-integration.md). Não há percentual de cobertura, benchmark de latência ou auditoria formal de acessibilidade. Capturas de [desktop](docs/testing/browser/dashboard-desktop.png) e [mobile](docs/testing/browser/dashboard-mobile.png) foram inspecionadas.
 
-Veja [execução do backend](backend/README.md) e [evidências do primeiro incremento](docs/testing/baseline-increment-1.md) e [validação do catálogo](docs/testing/baseline-increment-2.md) e [validação de leitores e exemplares](docs/testing/baseline-increment-3.md) e [validação da circulação](docs/testing/baseline-increment-4.md) e [validação das consultas](docs/testing/baseline-increment-5.md).
+## Material acadêmico
 
-## Tecnologias
+| Tema | Documentação |
+| --- | --- |
+| Requisitos e escopo | [Análise inicial](docs/requirements/initial-analysis.md), [MVP](docs/requirements/mvp-scope.md), [casos de uso](docs/requirements/use-cases.md) |
+| Banco de dados | [Modelo](docs/database/initial-model.md), [normalização](docs/database/normalization.md); DDL implementado nas migrations de backend/src/main/resources/db/migration |
+| Arquitetura | [Decisões iniciais e atualização](docs/architecture/architecture.md), [estrutura atual](docs/development/repository-structure.md), [diagramas](docs/uml/implemented-system.md) |
+| Evolução | [Diagnóstico da baseline](docs/before-refactoring/analysis.md), [conclusão e comparação da refatoração](docs/after-refactoring/step-8-domain-organization.md) |
+| Interface | [Dashboard/categorias](docs/frontend/increment-1.md), [autores/livros](docs/frontend/increment-2.md), [leitores/exemplares](docs/frontend/increment-3.md), [circulação](docs/frontend/increment-4.md) |
+| Apresentação | [Roteiro](docs/presentation/demo-guide.md), [guia de defesa técnica](docs/presentation/academic-guide.md) |
 
-Implementados: Java 21, Spring Boot, Maven Wrapper, MySQL, Flyway, JPA, Bean Validation, JUnit e Mockito. React, TypeScript e Vite continuam previstos para o frontend.
+Os documentos das primeiras etapas preservam contexto histórico; os contratos, diagramas implementados e instruções atuais identificam diferenças. Não presumir que propostas antigas constituem funcionalidades entregues.
 
-## Desenvolvimento
+## Baseline e contribuição
 
-A análise inicial foi aprovada para continuidade. A baseline do backend está preservada para comparação. A [análise dos problemas da baseline](docs/before-refactoring/analysis.md) registra evidências e propostas. A [primeira refatoração](docs/after-refactoring/step-1-errors.md) separa exceções de aplicação de HTTP. A [segunda refatoração](docs/after-refactoring/step-2-loan-status.md) centraliza a classificação dos empréstimos. A [terceira refatoração](docs/after-refactoring/step-3-readability.md) melhora a legibilidade dos services. A [quarta refatoração](docs/after-refactoring/step-4-book-queries.md) carrega autores em lote, mantendo a paginação. A [quinta refatoração](docs/after-refactoring/step-5-copy-queries.md) consulta ocupações de exemplares em lote. A [sexta refatoração](docs/after-refactoring/step-6-dashboard-repository.md) separa SQL do dashboard de sua coordenação. A [sétima refatoração](docs/after-refactoring/step-7-pagination.md) centraliza o contrato de paginação. A [oitava refatoração](docs/after-refactoring/step-8-domain-organization.md) organiza o código por domínio e conclui esta etapa. A [etapa de testes e TDD](docs/testing/tdd-isbn-whitespace.md) demonstra o ciclo em uma melhoria da normalização de ISBN, com [estratégia de testes](docs/testing/strategy.md) documentada. A [consolidação REST](docs/api/rest-contract.md) documenta os contratos e verifica erros, Location e exclusão sem corpo. O [primeiro incremento do frontend](docs/frontend/increment-1.md) implementa dashboard e categorias. O [segundo incremento](docs/frontend/increment-2.md) acrescenta autores e catálogo de livros, com busca e seleção de referências. O [terceiro incremento](docs/frontend/increment-3.md) implementa leitores e exemplares. O [quarto incremento](docs/frontend/increment-4.md) implementa empréstimos, devoluções e histórico, concluindo as telas principais. A [integração em navegador](docs/testing/browser-integration.md) verificou dois cenários Chromium e as telas em 320 px. A [execução com Docker Compose](docker/README.md) compila e integra os três serviços com volume e healthchecks. Próxima etapa: consolidar documentação e demonstração. Não há demonstração publicada nem licença definida nesta etapa.
-
-## Git
-
-A branch `main` guarda etapas verificáveis. Branches curtas, como `feat/initial-backend`, podem organizar mudanças maiores. Usaremos commits que representem entregas reais, com prefixos `docs:`, `feat:`, `test:`, `fix:` e `refactor:`.
-
-## Baseline acadêmica
-
-A tag `v0.1-baseline-backend` preserva a primeira versão funcional do backend antes da análise e refatoração. As quatro migrations e os 43 testes também foram verificados em um schema MySQL novo. A tag não representa o sistema completo com interface ou deploy.
+A tag `v0.1-baseline-backend` preserva a revisão anterior à refatoração, com 43 testes e migrations V1–V4 verificadas em schema novo. Não representa o produto completo. main contém entregas verificáveis, com commits docs/feat/test/fix/refactor. Siga [CONTRIBUTING.md](CONTRIBUTING.md); nunca versionar senhas, `.env`, dados pessoais ou outputs de teste com informações reais.
