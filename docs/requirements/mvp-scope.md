@@ -67,7 +67,7 @@ Essas escolhas serão refletidas nos contratos e no dicionário de dados. O fuso
 | AC16 | Usar interface a 320px e por teclado | Acessar ações essenciais, labels e foco; tabelas podem usar scroll horizontal |
 | AC17 | Recriar banco limpo pelas migrations | Obter schema válido e executar fluxo de circulação completo |
 
-Os critérios são compromissos de verificação futura, não testes executados. AC07 deve ser verificado contra MySQL, não apenas com mocks.
+Na etapa inicial estes critérios eram compromissos de verificação futura. A [matriz atual](../testing/acceptance-review.md) registra evidências implementadas e limites; não interpretar a lista sozinha como testes executados. AC07 deve ser verificado contra MySQL, não apenas com mocks.
 
 ## Entregas incrementais
 

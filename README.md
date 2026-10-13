@@ -19,7 +19,7 @@ Alternativas: [backend](backend/README.md) e [frontend](frontend/README.md) em d
 | Verificação | Resultado registrado |
 | --- | --- |
 | Backend | 86 testes aprovados no incremento de autenticação |
-| Frontend | 29 testes de componentes/cliente HTTP e typecheck/build aprovados |
+| Frontend | 30 testes de componentes/cliente HTTP e typecheck/build aprovados |
 | Navegador | 3 cenários Chromium aprovados com API/MySQL reais, inclusive nos containers; rotas em 320 px e link de salto por teclado |
 | Containers | Builds e healthchecks aprovados; fixture preservada após recriar containers e removida ao concluir |
 
@@ -47,3 +47,5 @@ A [autenticação](docs/deployment/authentication.md) protege a API por sessão 
 O [plano para VPS e HTTPS](docs/deployment/vps-plan.md) registra a preferência de hospedagem, limite de login e TLS local verificados. A publicação permanece pendente; o certificado de teste não é público.
 
 [Backup e restore](docs/deployment/backup-restore.md) têm runner privado e ensaio em schemas novos, sem substituir dados atuais. Agendamento, cópia externa e publicação da VPS continuam pendentes.
+
+[CI](docs/testing/ci.md) verifica backend/frontend em push e PR, sem deploy automático. A [revisão de aceite](docs/testing/acceptance-review.md) mapeia requisitos às evidências e limitações antes de publicação.

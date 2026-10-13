@@ -1,6 +1,6 @@
 # Desenvolvimento e contribuições
 
-Este projeto será desenvolvido em etapas para permitir estudo e comparação da arquitetura. Consulte o [escopo](docs/requirements/mvp-scope.md) e a [estrutura prevista](docs/development/repository-structure.md) antes de ampliar funcionalidades.
+Este projeto será desenvolvido em etapas para permitir estudo e comparação da arquitetura. Consulte o [escopo](docs/requirements/mvp-scope.md) e a [estrutura atual](docs/development/repository-structure.md) antes de ampliar funcionalidades.
 
 ## Fluxo Git
 
@@ -14,7 +14,7 @@ Não versionar credenciais, arquivos .env ou dados pessoais reais. Exemplos e de
 
 ## Critérios de conclusão
 
-Uma funcionalidade termina quando atende seus critérios de aceite, foi verificada por testes ou execução apropriada e tem documentação atualizada. Não afirmar que build, Docker, MySQL ou interface funcionam sem executar os respectivos checks. A etapa atual é documental e ainda não oferece comandos de execução da aplicação.
+Uma funcionalidade termina quando atende seus critérios de aceite, foi verificada por testes ou execução apropriada e tem documentação atualizada. Não afirmar que build, Docker, MySQL ou interface funcionam sem executar os respectivos checks. Os comandos de aplicação e testes estão nos READMEs de backend/frontend e Docker. O workflow de CI verifica as suítes e builds, sem realizar deploy. Consulte a matriz de aceite para limites da evidência.
 
 Refatoração deve preservar comportamento. Registre problemas da baseline antes de corrigi-los e compare as mesmas funcionalidades. Novas regras de negócio são alterações funcionais e devem ser descritas separadamente.
 

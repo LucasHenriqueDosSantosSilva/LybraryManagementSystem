@@ -1,5 +1,5 @@
 import { afterEach, expect, test, vi } from 'vitest';
-import { cleanup, render, screen } from '@testing-library/react';
+import { act, cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { LoansPage } from './LoansPage';
@@ -69,4 +69,18 @@ test('does not retry ambiguous mutation and tells user to inspect history', asyn
  await userEvent.click(screen.getByRole('button', { name: 'Registrar empréstimo' }));
  expect(await screen.findByRole('alert')).toHaveProperty('textContent', expect.stringContaining('consulte o histórico'));
  expect(call.mock.calls.filter(([path]) => path === '/loans')).toHaveLength(1);
+});
+
+test('blocks a second submission while the first loan is pending', async () => {
+ const { call } = setup(); await chooseLoan();
+ let resolve!: (value: api.Loan) => void;
+ call.mockReturnValueOnce(new Promise<api.Loan>(done => { resolve = done; }));
+ await userEvent.click(screen.getByRole('button', { name: 'Registrar empréstimo' }));
+ const pending = await screen.findByRole('button', { name: 'Registrando…' });
+ expect(pending.matches(':disabled')).toBe(true);
+ await userEvent.click(pending);
+ expect(call.mock.calls.filter(([path]) => path === '/loans')).toHaveLength(1);
+ expect(screen.queryByText(/registrado\. Vencimento/)).toBeNull();
+ await act(async () => { resolve(loan); });
+ await screen.findByText('Empréstimo #7 registrado. Vencimento: 23/10/2026.');
 });

@@ -1,0 +1,67 @@
+name: Verify library
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: verify-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  backend:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    services:
+      mysql:
+        image: mysql@sha256:6ea90827b1100f8f2ae306a539f86d2c264a26ed435a2a9f75551dd5c3aeb242
+        env:
+          MYSQL_DATABASE: library_test
+          MYSQL_USER: library
+          # Disposable CI fixtures only, never application/deployment credentials.
+          MYSQL_PASSWORD: ci-only-library-password
+          MYSQL_ROOT_PASSWORD: ci-only-root-password
+        ports: [3306:3306]
+        options: >-
+          --health-cmd="MYSQL_PWD=ci-only-library-password mysql -h127.0.0.1 -ulibrary library_test -e 'SELECT 1'"
+          --health-interval=5s --health-timeout=5s --health-retries=30
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+          cache-dependency-path: backend/pom.xml
+      - name: Verify migrations, rules, authentication and packaging
+        working-directory: backend
+        env:
+          DB_URL: jdbc:mysql://127.0.0.1:3306/library_test
+          DB_USER: library
+          DB_PASSWORD: ci-only-library-password
+        run: ./mvnw -B test package
+  frontend:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install from lockfile
+        working-directory: frontend
+        run: npm ci --no-audit --no-fund
+      - name: Verify components and HTTP client
+        working-directory: frontend
+        run: npm test
+      - name: Typecheck and build
+        working-directory: frontend
+        run: npm run build
+
