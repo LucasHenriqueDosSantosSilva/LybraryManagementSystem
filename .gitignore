@@ -11,3 +11,8 @@ target/
 
 frontend/test-results/
 frontend/playwright-report/
+
+__pycache__/
+backups/
+*.sql.gz
+*.sql.gz.json

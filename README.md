@@ -45,3 +45,5 @@ A tag `v0.1-baseline-backend` preserva a revisão anterior à refatoração, com
 A [autenticação](docs/deployment/authentication.md) protege a API por sessão e CSRF e inclui login/logout. A publicação ainda exige definição da infraestrutura e ajustes de HTTPS e operação.
 
 O [plano para VPS e HTTPS](docs/deployment/vps-plan.md) registra a preferência de hospedagem, limite de login e TLS local verificados. A publicação permanece pendente; o certificado de teste não é público.
+
+[Backup e restore](docs/deployment/backup-restore.md) têm runner privado e ensaio em schemas novos, sem substituir dados atuais. Agendamento, cópia externa e publicação da VPS continuam pendentes.

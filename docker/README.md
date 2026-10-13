@@ -58,3 +58,5 @@ Autenticação é obrigatória por padrão; acrescente LIBRARY_ADMIN_PASSWORD ao
 ## Overlay HTTPS
 
 O [plano VPS](../docs/deployment/vps-plan.md) descreve docker/compose.https.yaml, que substitui a porta publicada por loopback 8443, monta volume externo de certificados e força cookie Secure. scripts/prepare_local_tls.sh cria somente certificados descartáveis locais; certificados públicos e renovação dependem do domínio/provedor. Limite de login padrão é 10 tentativas por 60 segundos por processo, com 429.
+
+[Backup e restore](../docs/deployment/backup-restore.md): o dump lógico não substitui recuperação de credenciais/certificados nem cópia externa. A restauração automatizada só aceita schema novo library_restore_*.

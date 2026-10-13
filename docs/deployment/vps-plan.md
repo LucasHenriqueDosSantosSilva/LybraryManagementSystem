@@ -40,7 +40,7 @@ O helper gera certificado localhost/127.0.0.1 de um dia e o renova quando faltam
 5. Fazer backup e ensaio de restore em schema/volume separado, definir rollback de aplicação/migrations e credenciais. down --volumes não é rollback.
 6. Verificar login, cookie Secure/HttpOnly, CSRF, 429, certificado/hostname, circulação e histórico com dados fictícios. Só então publicar e registrar URL/revisão/evidências reais.
 
-Backup/restore e renovação pública ainda não foram ensaiados; nenhuma URL pública existe. Próximo incremento: concretizar operação de backup/restore e informações necessárias da VPS escolhida.
+Backup/restore foi ensaiado no [incremento 3](backup-restore.md); renovação pública ainda não foi ensaiada. nenhuma URL pública existe. Próximo passo: definir informações da VPS/domínio e operação externa de backup.
 
 ## Evidências desta entrega
 
