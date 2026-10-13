@@ -1,6 +1,6 @@
 # Etapa 12 — Contrato REST do backend
 
-Contrato implementado para desenvolvimento local. Base `/api`, JSON em requisições e respostas; erros em `application/problem+json`. Sem autenticação nesta versão. As rotas abaixo orientam a próxima etapa de frontend.
+Contrato implementado para desenvolvimento local. Base `/api`, JSON em requisições e respostas; erros em `application/problem+json`. Autenticação por sessão exigida por padrão; veja [autenticação](../deployment/authentication.md) para sessão, login/logout e CSRF. As rotas abaixo orientam a próxima etapa de frontend.
 
 ## Recursos e métodos
 
@@ -45,6 +45,8 @@ Dashboard retorna totalBooks, totalCopies, totalReaders, availableCopies, active
 | HTTP | Significado |
 | --- | --- |
 | 400 | Campos inválidos, JSON ilegível, identificador não numérico, parâmetros ou filtros inválidos |
+| 401 | Sessão ausente/credenciais inválidas |
+| 403 | CSRF ausente/inválido ou acesso negado |
 | 404 | Recurso referenciado não encontrado |
 | 405 | Método não permitido; header Allow informa métodos aceitos |
 | 409 | Unicidade, vínculos/histórico ou estado incompatível com operação |

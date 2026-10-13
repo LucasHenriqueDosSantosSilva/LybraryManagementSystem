@@ -5,7 +5,7 @@ Docker Engine e Compose v2 com BuildKit. O projeto compila backend e frontend em
 ```bash
 cp .env.example .env
 chmod 600 .env
-# Edite .env e defina MYSQL_PASSWORD e MYSQL_ROOT_PASSWORD distintos.
+# Edite .env e defina MYSQL_PASSWORD, MYSQL_ROOT_PASSWORD e LIBRARY_ADMIN_PASSWORD distintos.
 docker compose config --quiet
 docker compose up --build -d --wait
 docker compose ps
@@ -51,4 +51,6 @@ docker compose --env-file /workspace/library-runtime/compose.env up -d --wait
 
 compose.env guarda senhas locais fora do checkout, com permissão 600, e configura library_test para esta verificação. Nunca imprimir `docker compose config` resolvido com segredos; use `config --quiet`. Os helpers e processos precisam das instruções de ambiente salvas; não pressupor processos restaurados.
 
-Esta é execução local reproduzível, sem autenticação, HTTPS ou deploy público. Próxima etapa: consolidar documentação e roteiro acadêmico de demonstração.
+Esta é execução local reproduzível, com autenticação por sessão, ainda sem HTTPS ou deploy público. Próxima etapa: consolidar documentação e roteiro acadêmico de demonstração.
+
+Autenticação é obrigatória por padrão; acrescente LIBRARY_ADMIN_PASSWORD ao env privado antes de atualizar. Healthchecks usam /api/health sem acessar dados protegidos. Confira [autenticação e limites para publicação](../docs/deployment/authentication.md). E2E autenticado também requer E2E_USERNAME e E2E_PASSWORD de conta descartável; traces de login ficam desativados.

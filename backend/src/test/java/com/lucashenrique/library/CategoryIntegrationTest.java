@@ -7,7 +7,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-@SpringBootTest @AutoConfigureMockMvc @Transactional
+@SpringBootTest(properties = "library.auth.enabled=false") @AutoConfigureMockMvc @Transactional
 class CategoryIntegrationTest {
     @Autowired MockMvc mvc;
     @Test void createNormalizesAndCanBeRead() throws Exception {

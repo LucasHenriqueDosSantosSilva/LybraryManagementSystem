@@ -4,7 +4,7 @@ Roteiro sugerido de 10–12 minutos, com dados fictícios. Use a execução [Com
 
 ## Preparação
 
-Escolha nomes e códigos próprios para a sessão. Consulte o catálogo para evitar ISBN repetido; exemplos válidos: 9780306406157 e 9780804429573. Se ambos já existirem, reutilize a edição e seus autores/categoria, criando somente exemplar e leitor próprios. Não alterar uma edição com histórico para acomodar a apresentação. O prazo padrão é 14 dias; um empréstimo feito hoje não fica atrasado na hora.
+Entre com a conta de bibliotecário configurada no ambiente; não projetar a senha nem ler arquivos privados na apresentação. Veja [autenticação](../deployment/authentication.md). Escolha nomes e códigos próprios para a sessão. Consulte o catálogo para evitar ISBN repetido; exemplos válidos: 9780306406157 e 9780804429573. Se ambos já existirem, reutilize a edição e seus autores/categoria, criando somente exemplar e leitor próprios. Não alterar uma edição com histórico para acomodar a apresentação. O prazo padrão é 14 dias; um empréstimo feito hoje não fica atrasado na hora.
 
 ## Sequência na interface
 

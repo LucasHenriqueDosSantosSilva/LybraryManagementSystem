@@ -10,7 +10,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-@SpringBootTest @AutoConfigureMockMvc
+@SpringBootTest(properties = "library.auth.enabled=false") @AutoConfigureMockMvc
 class CatalogIntegrationTest {
  @Autowired MockMvc mvc;
  @Autowired JdbcTemplate jdbc;

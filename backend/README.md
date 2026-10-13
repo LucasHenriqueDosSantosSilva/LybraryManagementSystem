@@ -145,3 +145,7 @@ Os pacotes `catalog`, `readers`, `loans` e `reporting` agrupam as camadas por do
 A normalização de ISBN aceita whitespace Unicode, mantendo checksum e unicidade. Veja [TDD do ISBN](../docs/testing/tdd-isbn-whitespace.md) e [estratégia de testes](../docs/testing/strategy.md).
 
 O [contrato REST](../docs/api/rest-contract.md) orienta os consumidores. A suíte atual soma 79 execuções, incluindo RestContractTest.
+
+## Autenticação atual
+
+A API exige sessão por padrão. Configure LIBRARY_ADMIN_USERNAME e LIBRARY_ADMIN_PASSWORD no ambiente, sem versionar valores. O helper de nuvem carrega auth.env privado. Para teste local isolado pode-se desabilitar explicitamente por LIBRARY_AUTH_ENABLED=false; não fazê-lo em publicação. A suíte atual tem 82 execuções, incluindo três de autenticação/CSRF/logout com segurança habilitada. Veja [configuração, endpoints e limites](../docs/deployment/authentication.md).

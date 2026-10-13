@@ -4,11 +4,19 @@ export type Dashboard = { totalBooks: number; totalCopies: number; totalReaders:
 export class ApiError extends Error {
   constructor(message: string, public status: number, public fields: { field: string; message: string }[] = []) { super(message); }
 }
+let authenticationRequired = false;
+export function configureAuthentication(required: boolean) { authenticationRequired = required; }
 export async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   let response: Response;
-  try { response = await fetch(`/api${path}`, { ...options, headers: { ...(options.body ? { 'Content-Type': 'application/json' } : {}), ...options.headers } }); }
+  const headers: Record<string, string> = {};
+  if (authenticationRequired && !["GET", "HEAD", "OPTIONS"].includes((options.method || "GET").toUpperCase())) {
+    const csrf = await request<{ token: string; headerName: string }>("/auth/csrf");
+    headers[csrf.headerName] = csrf.token;
+  }
+  try { response = await fetch(`/api${path}`, { ...options, headers: { ...headers, ...(options.body ? { 'Content-Type': 'application/json' } : {}), ...options.headers } }); }
   catch (error) { if (error instanceof DOMException && error.name === 'AbortError') throw error; throw new ApiError('Não foi possível conectar à biblioteca. Tente novamente.', 0); }
   if (!response.ok) {
+    if (response.status === 401 && path !== "/auth/login") window.dispatchEvent(new Event("library:unauthorized"));
     const problem = await response.json().catch(() => ({}));
     throw new ApiError(problem.detail || 'Não foi possível concluir a operação.', response.status, problem.errors || []);
   }

@@ -15,7 +15,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.transaction.IllegalTransactionStateException;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-@SpringBootTest
+@SpringBootTest(properties = "library.auth.enabled=false")
 class DashboardTransactionTest {
   @Autowired DashboardService service;
   @MockitoSpyBean DashboardRepository repository;

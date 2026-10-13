@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-@SpringBootTest @AutoConfigureMockMvc @Import(LoanIntegrationTest.TimeConfig.class)
+@SpringBootTest(properties = "library.auth.enabled=false") @AutoConfigureMockMvc @Import(LoanIntegrationTest.TimeConfig.class)
 class LoanIntegrationTest {
  static class TestClock extends Clock {
   final AtomicReference<Instant> instant=new AtomicReference<>();

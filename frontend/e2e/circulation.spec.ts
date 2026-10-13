@@ -2,7 +2,11 @@ import { test, expect, type Page } from '@playwright/test';
 import { execFileSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 
-test('complete circulation through real UI and API', async ({ page, request }) => {
+test('complete circulation through real UI and API', async ({ page }) => {
+  const request = page.context().request;
+  let cookie = '';
+  await login(page);
+  cookie = (await page.context().cookies()).map(c => `${c.name}=${c.value}`).join('; ');
   if (process.env.E2E_DB_SCHEMA !== 'library_test') throw new Error('Use the exclusive library_test schema and set E2E_DB_SCHEMA=library_test.');
   const base = process.env.E2E_BASE_URL || 'http://127.0.0.1:5174';
   if (new URL(base).hostname !== '127.0.0.1') throw new Error('Use a local isolated server.');
@@ -33,7 +37,7 @@ test('complete circulation through real UI and API', async ({ page, request }) =
     await page.getByRole('button', { name: 'Registrar empréstimo' }).click(); const result = await response; expect(result.status()).toBe(201); loanId = (await result.json()).id;
     await expect(page.getByText(`Empréstimo #${loanId} · Ativo`, { exact: true })).toBeVisible();
     await expect(page.getByRole('combobox', { name: 'Exemplar disponível', exact: true }).locator(`option[value="${copyId}"]`)).toHaveCount(0);
-    const duplicate = await request.post('/api/loans', { data: { readerId, copyId } }); expect(duplicate.status()).toBe(409);
+    const duplicate = await request.post('/api/loans', { data: { readerId, copyId }, headers: await csrfHeaders(request) }); expect(duplicate.status()).toBe(409);
     await visit('/readers', 'Leitores'); await page.getByRole('button', { name: `Desativar Leitor ${suffix}`, exact: true }).click(); await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
     await expect(page.getByRole('button', { name: `Ativar Leitor ${suffix}`, exact: true })).toBeVisible();
     await visit('/loans', 'Empréstimos e devoluções'); await expect(page.getByRole('button', { name: `Devolver empréstimo #${loanId}`, exact: true })).toBeVisible();
@@ -51,11 +55,13 @@ test('complete circulation through real UI and API', async ({ page, request }) =
       const sql = `DELETE l FROM loans l JOIN readers r ON r.id=l.reader_id WHERE l.id=${Number(loanId)} AND l.reader_id=${Number(readerId)} AND l.copy_id=${Number(copyId)} AND r.registration_number='${registration}';`;
       execFileSync('docker', ['exec', '-i', process.env.E2E_MYSQL_CONTAINER || 'library-mysql', 'sh', '-c', 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql -uroot library_test'], { input: sql, stdio: ['pipe', 'ignore', 'pipe'] });
     }
-    for (const record of created.reverse()) expect((await fetch(`${base}/api/${record.resource}/${record.id}`, { method: 'DELETE' })).status).toBe(204);
+    const token = await (await fetch(`${base}/api/auth/csrf`, { headers: { Cookie: cookie } })).json();
+    for (const record of created.reverse()) expect((await fetch(`${base}/api/${record.resource}/${record.id}`, { method: 'DELETE', headers: { Cookie: cookie, ...(token.token ? { [token.headerName]: token.token } : {}) } })).status).toBe(204);
   }
 });
 
 test('all routes fit 320px and support keyboard navigation', async ({ page }) => {
+  await login(page);
   await page.setViewportSize({ width: 320, height: 800 });
   for (const path of ['/', '/categories', '/authors', '/books', '/readers', '/copies', '/loans']) {
     await page.goto(path); await page.waitForLoadState('networkidle'); await expect(page.locator('h1')).toBeVisible();
@@ -64,4 +70,29 @@ test('all routes fit 320px and support keyboard navigation', async ({ page }) =>
   await page.goto('/'); await page.keyboard.press('Tab'); await expect(page.getByRole('link', { name: 'Pular para o conteúdo' })).toBeFocused();
   await page.keyboard.press('Enter'); expect(await page.evaluate(() => location.hash)).toBe('#main'); await expect(page.locator('#main')).toBeFocused();
   await page.screenshot({ path: 'test-results/dashboard-mobile.png', fullPage: true });
+});
+
+async function login(page: Page) {
+  await page.goto('/');
+  const state = await (await page.context().request.get('/api/auth/session')).json();
+  if (!state.authenticationRequired) return;
+  if (!process.env.E2E_USERNAME || !process.env.E2E_PASSWORD) throw new Error('Configure disposable E2E credentials.');
+  await page.getByLabel('Usuário', { exact: true }).fill(process.env.E2E_USERNAME);
+  await page.getByLabel('Senha', { exact: true }).fill(process.env.E2E_PASSWORD);
+  await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Sair', exact: true })).toBeVisible();
+}
+async function csrfHeaders(request: import('@playwright/test').APIRequestContext) {
+  const token = await (await request.get('/api/auth/csrf')).json();
+  return token.token ? { [token.headerName]: token.token } : {};
+}
+test('login failure and logout protect private pages', async ({ page }) => {
+  await page.goto('/');
+  const state = await (await page.context().request.get('/api/auth/session')).json();
+  test.skip(!state.authenticationRequired, 'Requires authentication-enabled backend');
+  await page.getByLabel('Usuário').fill('invalid-test-user'); await page.getByLabel('Senha').fill('Invalid-test-password');
+  await page.getByRole('button', { name: 'Entrar', exact: true }).click(); await expect(page.getByRole('alert')).toContainText('Credenciais inválidas.');
+  await login(page); await page.getByRole('button', { name: 'Sair', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Entrar', exact: true })).toBeVisible();
+  expect((await page.context().request.get('/api/books')).status()).toBe(401);
 });

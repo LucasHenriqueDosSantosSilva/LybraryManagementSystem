@@ -105,3 +105,7 @@ flowchart LR
 ```
 
 Backend e banco não publicam portas no host. Os agrupamentos de código mantêm dependências entre domínios, inclusive catálogo/leitores consultando histórico de loans; o desenho de containers não prova desacoplamento interno. Veja [execução](../../docker/README.md).
+
+## Autenticação acrescentada na etapa 17
+
+SecurityFilterChain verifica sessão/CSRF antes dos controllers protegidos. AuthGate consulta sessão antes de montar telas; login usa token obtido em /api/auth/csrf, e logout invalida a sessão. Usuário de aplicação é bibliotecário configurado externamente, separado de Reader. O endpoint público /api/health informa somente saúde de conexão; os diagramas de circulação acima abreviam essas verificações. Veja [autenticação](../deployment/authentication.md).

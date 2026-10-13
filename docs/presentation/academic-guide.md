@@ -1,6 +1,6 @@
 # Guia de defesa técnica — etapa 16
 
-Use a documentação como evidência, distinguindo implementado, medido e previsto. A demonstração local cobre o MVP; autenticação e deploy público não foram entregues.
+Use a documentação como evidência, distinguindo implementado, medido e previsto. A demonstração local cobre o MVP; autenticação por sessão foi acrescentada na etapa 17, mas deploy público continua pendente.
 
 | Questão | Decisão e evidência |
 | --- | --- |
@@ -27,4 +27,4 @@ Leia [comparação](../after-refactoring/step-8-domain-organization.md), [TDD](.
 
 ## Limitações e trabalho restante
 
-Sem licença definida, autenticação ou demonstração pública. Auditoria formal de acessibilidade, outros browsers, cobertura instrumentada, carga, backup/restore e deploy ainda não foram verificados. A etapa de deploy precisa definir destino e acesso, além de implementar autenticação antes de escrita pública. Revisão acadêmica final deverá conferir apresentação, referências e requisitos da instituição, sem inventar resultados que não foram medidos.
+Sem licença definida ou demonstração pública. Autenticação de conta única com sessão/CSRF está implementada; HTTPS e limitação de tentativas ainda pendentes. Auditoria formal de acessibilidade, outros browsers, cobertura instrumentada, carga, backup/restore e deploy ainda não foram verificados. A etapa de deploy precisa definir destino e acesso, além de concluir os ajustes de operação e proteção de login antes de escrita pública. Revisão acadêmica final deverá conferir apresentação, referências e requisitos da instituição, sem inventar resultados que não foram medidos.

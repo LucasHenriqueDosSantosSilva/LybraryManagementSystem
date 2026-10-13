@@ -10,7 +10,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-@SpringBootTest @AutoConfigureMockMvc
+@SpringBootTest(properties = "library.auth.enabled=false") @AutoConfigureMockMvc
 class ReaderAndCopyIntegrationTest {
  @Autowired MockMvc mvc;@Autowired ObjectMapper json;@Autowired JdbcTemplate jdbc;
  final List<Long> readers=new ArrayList<>();final List<Long> copies=new ArrayList<>();

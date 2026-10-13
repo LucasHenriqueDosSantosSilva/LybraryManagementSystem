@@ -22,3 +22,15 @@ test('loads reference data beyond the first page', async () => {
   expect(await references('authors', new AbortController().signal)).toEqual([{ id: 1 }, { id: 101 }]);
   expect(fetchMock.mock.calls[1][0]).toBe('/api/authors?page=1&size=100');
 });
+
+test('obtains CSRF token before sending an authenticated mutation', async () => {
+  const { configureAuthentication } = await import('./api');
+  const fetchMock = vi.fn().mockResolvedValueOnce(new Response(JSON.stringify({ token: 'test-masked-token', headerName: 'X-CSRF-TOKEN' })))
+    .mockResolvedValueOnce(new Response(null, { status: 204 }));
+  vi.stubGlobal('fetch', fetchMock); configureAuthentication(true);
+  try {
+    await request('/auth/logout', { method: 'POST' });
+    expect(fetchMock.mock.calls[0][0]).toBe('/api/auth/csrf');
+    expect(fetchMock.mock.calls[1][1].headers).toMatchObject({ 'X-CSRF-TOKEN': 'test-masked-token' });
+  } finally { configureAuthentication(false); }
+});
