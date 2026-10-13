@@ -1,0 +1,15 @@
+# Compose >= 2.24.4; certificates must already exist in the external volume.
+services:
+  backend:
+    environment:
+      LIBRARY_COOKIE_SECURE: "true"
+  frontend:
+    command: ["-c", "/etc/nginx/nginx.https.conf", "-g", "daemon off;"]
+    ports: !override
+      - "127.0.0.1:${HTTPS_PORT:-8443}:8443"
+    volumes:
+      - tls-certificates:/etc/nginx/tls:ro
+volumes:
+  tls-certificates:
+    external: true
+    name: ${TLS_VOLUME:?Configure TLS_VOLUME with an existing certificate volume}

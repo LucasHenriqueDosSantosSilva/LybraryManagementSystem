@@ -50,6 +50,7 @@ Dashboard retorna totalBooks, totalCopies, totalReaders, availableCopies, active
 | 404 | Recurso referenciado não encontrado |
 | 405 | Método não permitido; header Allow informa métodos aceitos |
 | 409 | Unicidade, vínculos/histórico ou estado incompatível com operação |
+| 429 | Orçamento de login excedido; Retry-After informa espera em segundos |
 | 415 | Content-Type não suportado |
 | 500 | Falha interna; não expor SQL ou stack trace ao usuário |
 

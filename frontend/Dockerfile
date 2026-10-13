@@ -9,6 +9,7 @@ COPY . .
 RUN npm run build
 FROM nginx@sha256:30f1c0d78e0ad60901648be663a710bdadf19e4c10ac6782c235200619158284
 COPY --chown=101:101 --chmod=444 nginx.conf /etc/nginx/nginx.conf
+COPY --chown=101:101 --chmod=444 nginx.https.conf /etc/nginx/nginx.https.conf
 COPY --from=build --chown=101:101 /app/dist /usr/share/nginx/html
 USER 101:101
 EXPOSE 8080

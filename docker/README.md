@@ -54,3 +54,7 @@ compose.env guarda senhas locais fora do checkout, com permissão 600, e configu
 Esta é execução local reproduzível, com autenticação por sessão, ainda sem HTTPS ou deploy público. Próxima etapa: consolidar documentação e roteiro acadêmico de demonstração.
 
 Autenticação é obrigatória por padrão; acrescente LIBRARY_ADMIN_PASSWORD ao env privado antes de atualizar. Healthchecks usam /api/health sem acessar dados protegidos. Confira [autenticação e limites para publicação](../docs/deployment/authentication.md). E2E autenticado também requer E2E_USERNAME e E2E_PASSWORD de conta descartável; traces de login ficam desativados.
+
+## Overlay HTTPS
+
+O [plano VPS](../docs/deployment/vps-plan.md) descreve docker/compose.https.yaml, que substitui a porta publicada por loopback 8443, monta volume externo de certificados e força cookie Secure. scripts/prepare_local_tls.sh cria somente certificados descartáveis locais; certificados públicos e renovação dependem do domínio/provedor. Limite de login padrão é 10 tentativas por 60 segundos por processo, com 429.

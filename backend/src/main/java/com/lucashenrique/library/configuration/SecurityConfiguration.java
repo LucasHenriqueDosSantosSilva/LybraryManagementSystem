@@ -37,13 +37,20 @@ public class SecurityConfiguration {
 
   @Bean
   SecurityFilterChain security(
-      HttpSecurity http, ObjectMapper json, @Value("${library.auth.enabled:true}") boolean enabled)
+      HttpSecurity http,
+      ObjectMapper json,
+      @Value("${library.auth.enabled:true}") boolean enabled,
+      @Value("${library.auth.login-limit:10}") int loginLimit,
+      @Value("${library.auth.login-window-seconds:60}") int loginWindow)
       throws Exception {
     if (!enabled) {
       http.csrf(csrf -> csrf.disable())
           .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
       return http.build();
     }
+    http.addFilterBefore(
+        new LoginThrottleFilter(new LoginAttempts(loginLimit, loginWindow, System::nanoTime), json),
+        org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
     http.authorizeHttpRequests(
             auth ->
                 auth.requestMatchers("/api/auth/session", "/api/auth/csrf", "/api/health", "/error")

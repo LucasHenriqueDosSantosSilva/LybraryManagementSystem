@@ -5,3 +5,6 @@ playwright-report
 .git
 .env*
 *.log
+
+*.pem
+*.key

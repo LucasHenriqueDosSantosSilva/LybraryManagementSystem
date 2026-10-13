@@ -18,7 +18,7 @@ Alternativas: [backend](backend/README.md) e [frontend](frontend/README.md) em d
 
 | Verificação | Resultado registrado |
 | --- | --- |
-| Backend | 82 testes aprovados no incremento de autenticação |
+| Backend | 86 testes aprovados no incremento de autenticação |
 | Frontend | 29 testes de componentes/cliente HTTP e typecheck/build aprovados |
 | Navegador | 3 cenários Chromium aprovados com API/MySQL reais, inclusive nos containers; rotas em 320 px e link de salto por teclado |
 | Containers | Builds e healthchecks aprovados; fixture preservada após recriar containers e removida ao concluir |
@@ -43,3 +43,5 @@ Os documentos das primeiras etapas preservam contexto histórico; os contratos, 
 A tag `v0.1-baseline-backend` preserva a revisão anterior à refatoração, com 43 testes e migrations V1–V4 verificadas em schema novo. Não representa o produto completo. main contém entregas verificáveis, com commits docs/feat/test/fix/refactor. Siga [CONTRIBUTING.md](CONTRIBUTING.md); nunca versionar senhas, `.env`, dados pessoais ou outputs de teste com informações reais.
 
 A [autenticação](docs/deployment/authentication.md) protege a API por sessão e CSRF e inclui login/logout. A publicação ainda exige definição da infraestrutura e ajustes de HTTPS e operação.
+
+O [plano para VPS e HTTPS](docs/deployment/vps-plan.md) registra a preferência de hospedagem, limite de login e TLS local verificados. A publicação permanece pendente; o certificado de teste não é público.

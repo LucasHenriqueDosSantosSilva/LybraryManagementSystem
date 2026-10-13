@@ -28,7 +28,7 @@ Navegador: três cenários Chromium passaram com autenticação habilitada — c
 
 ## O que ainda falta para publicar
 
-Não houve deploy. É necessário escolher destino, configurar HTTPS, habilitar LIBRARY_COOKIE_SECURE=true na origem HTTPS e tratar confiança no proxy, limites de tentativas no login, gestão segura das credenciais, backup/restore e operação. A implementação atual não contém rate limiting ou bloqueio de tentativas e não deve ser apresentada como configuração pública final. Cookie Secure permanece false somente para HTTP local. Sessões são em memória e não sobrevivem a reinícios; não há replicação entre instâncias.
+Não houve deploy. É necessário escolher destino, configurar HTTPS, habilitar LIBRARY_COOKIE_SECURE=true na origem HTTPS e tratar confiança no proxy, limites de tentativas no login, gestão segura das credenciais, backup/restore e operação. O incremento 2 acrescentou limite por processo de 10 tentativas/60 segundos, com 429 e Retry-After; isso não é configuração pública final. Veja [VPS e HTTPS](vps-plan.md). Cookie Secure permanece false somente para HTTP local. Sessões são em memória e não sobrevivem a reinícios; não há replicação entre instâncias.
 
 Roteiro atual: escolher a infraestrutura e testar esses ajustes antes de publicar. As evidências locais e de containers não comprovam acesso em domínio público.
 

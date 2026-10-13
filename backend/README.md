@@ -149,3 +149,5 @@ O [contrato REST](../docs/api/rest-contract.md) orienta os consumidores. A suít
 ## Autenticação atual
 
 A API exige sessão por padrão. Configure LIBRARY_ADMIN_USERNAME e LIBRARY_ADMIN_PASSWORD no ambiente, sem versionar valores. O helper de nuvem carrega auth.env privado. Para teste local isolado pode-se desabilitar explicitamente por LIBRARY_AUTH_ENABLED=false; não fazê-lo em publicação. A suíte atual tem 82 execuções, incluindo três de autenticação/CSRF/logout com segurança habilitada. Veja [configuração, endpoints e limites](../docs/deployment/authentication.md).
+
+Limite de login por processo: LIBRARY_LOGIN_LIMIT (10) e LIBRARY_LOGIN_WINDOW_SECONDS (60). Configuração e tradeoffs em [plano VPS](../docs/deployment/vps-plan.md). Suíte atual: 86 testes.
